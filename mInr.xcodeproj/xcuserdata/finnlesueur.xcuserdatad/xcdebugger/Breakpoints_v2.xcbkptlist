@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "187AEF5C-9ADC-480A-A144-7F976B419AD3"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B50465B7-E64B-4315-8CAF-613CA1295940"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "mInr/Extensions/AppStorageExtensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "10"
+            endingLineNumber = "10"
+            landmarkName = "init?(rawValue:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B50465B7-E64B-4315-8CAF-613CA1295940 - c04e3dc364a39d63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftUI.Color.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;SwiftUI.Color&gt;"
+                  moduleName = "mInr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/finnlesueur/Git/mInr/mInr/Extensions/AppStorageExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "188">
+               </Location>
+               <Location
+                  uuid = "B50465B7-E64B-4315-8CAF-613CA1295940 - c04e3dc364a39d63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftUI.Color.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;SwiftUI.Color&gt;"
+                  moduleName = "mInr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/finnlesueur/Git/mInr/mInr/Extensions/AppStorageExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "276">
+               </Location>
+               <Location
+                  uuid = "B50465B7-E64B-4315-8CAF-613CA1295940 - c04e3dc364a39d63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftUI.Color.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;SwiftUI.Color&gt;"
+                  moduleName = "mInr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/finnlesueur/Git/mInr/mInr/Extensions/AppStorageExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "291">
+               </Location>
+               <Location
+                  uuid = "B50465B7-E64B-4315-8CAF-613CA1295940 - c04e3dc364a39d63"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftUI.Color.init(rawValue: Swift.String) -&gt; Swift.Optional&lt;SwiftUI.Color&gt;"
+                  moduleName = "mInr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/finnlesueur/Git/mInr/mInr/Extensions/AppStorageExtensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "362">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

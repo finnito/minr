@@ -6,82 +6,64 @@
 //
 
 import SwiftUI
-import CoreData
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var viewContext
-
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        animation: .default)
-    private var items: FetchedResults<Item>
-
+    @ObservedObject var dataModel = DataManager.shared
+    @Environment(\.colorScheme) var colorScheme
+    @State private var showWebView = false
+    
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+        NavigationStack {
+            ScrollView {
+                AddWarfarinView()
+                    .padding(10)
+                
+                AddINRView()
+                    .padding(10)
+                
+                WarfarinINRChart()
+                    .padding(10)
+                
+                Text("Warfarin Compliance")
+                    .sectionHeaderStyle()
+                    .padding(.top, 10)
+                    .padding(.horizontal, 15)
+            
+                CalendarView(
+                    interval: DateInterval(start: .distantPast, end: Date())
+                )
+                .padding(5)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(colorScheme == .dark ? .white.opacity(0.1) : .white)
+                        .shadow(
+                            color: Color.gray.opacity(0.25),
+                            radius: 10,
+                            x: 0,
+                            y: 0
+                        )
+                )
+                .padding(.top, 0)
+                .padding(.horizontal, 10)
+                .navigationTitle("Home")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    
+                    Button {
+                        showWebView.toggle()
                     } label: {
-                        Text(item.timestamp!, formatter: itemFormatter)
+                        Label("", systemImage: "questionmark.circle")
+                    }.sheet(isPresented: $showWebView) {
+                        SFSafariViewWrapper(url: URL(string: "https://finn.lesueur.nz/minr-help.html")!)
+                    }
+                    NavigationLink(destination: SettingsView()) {
+                        Label("", systemImage: "gear")
                     }
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-
-            do {
-                try viewContext.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
+            }.background(Color(UIColor.systemGroupedBackground))
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    formatter.timeStyle = .medium
-    return formatter
-}()
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
