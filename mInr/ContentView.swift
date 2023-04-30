@@ -48,7 +48,6 @@ struct ContentView: View {
                 .navigationTitle("Home")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
-                    
                     Button {
                         showWebView.toggle()
                     } label: {
@@ -60,6 +59,9 @@ struct ContentView: View {
                         Label("", systemImage: "gear")
                     }
                 }
+                
+                StoreView()
+                    .padding(10)
             }.background(Color(UIColor.systemGroupedBackground))
         }
     }

@@ -14,6 +14,7 @@ struct mInrApp: App {
     @AppStorage("lightAccentColour") var lightAccentColour: Color = .red
     @AppStorage("darkAccentColour") var darkAccentColour: Color = .yellow
     @StateObject private var dataModel = DataManager()
+    @StateObject private var purchaseManager = PurchaseManager()
     
     let persistenceController = PersistenceController.shared
     
@@ -48,7 +49,11 @@ struct mInrApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(dataModel)
+                .environmentObject(purchaseManager)
                 .tint(getCurrentSystemColorScheme() == .dark ? darkAccentColour : lightAccentColour)
+                .task {
+                    await purchaseManager.updatePurchasedProducts()
+                }
         }
     }
 }

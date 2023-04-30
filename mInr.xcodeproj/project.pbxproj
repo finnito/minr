@@ -32,6 +32,10 @@
 		E84C90CC29FBCCA1009DF0E9 /* Widget_Status-sm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C90CB29FBCCA1009DF0E9 /* Widget_Status-sm.swift */; };
 		E84C90CE29FC8E9A009DF0E9 /* CalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C90CD29FC8E9A009DF0E9 /* CalendarExtension.swift */; };
 		E84C911129FDBE2E009DF0E9 /* SFSafariViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C911029FDBE2E009DF0E9 /* SFSafariViewWrapper.swift */; };
+		E84C911529FDEFAB009DF0E9 /* mINR.storekit in Resources */ = {isa = PBXBuildFile; fileRef = E84C911429FDEFAB009DF0E9 /* mINR.storekit */; };
+		E84C911829FDF096009DF0E9 /* StoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C911729FDF096009DF0E9 /* StoreView.swift */; };
+		E84C911A29FDF1BB009DF0E9 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E84C911929FDF1BB009DF0E9 /* StoreKit.framework */; };
+		E84C911E29FE07C4009DF0E9 /* PurchaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C911D29FE07C4009DF0E9 /* PurchaseManager.swift */; };
 		E85255D329CED9EA0066E884 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85255D229CED9EA0066E884 /* DateExtensions.swift */; };
 		E85255D529CFA6840066E884 /* AppStorageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85255D429CFA6840066E884 /* AppStorageExtensions.swift */; };
 		E85255D729D039BC0066E884 /* TextExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85255D629D039BC0066E884 /* TextExtensions.swift */; };
@@ -122,6 +126,10 @@
 		E84C90CD29FC8E9A009DF0E9 /* CalendarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExtension.swift; sourceTree = "<group>"; };
 		E84C910B29FCCA74009DF0E9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E84C911029FDBE2E009DF0E9 /* SFSafariViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSafariViewWrapper.swift; sourceTree = "<group>"; };
+		E84C911429FDEFAB009DF0E9 /* mINR.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = mINR.storekit; sourceTree = "<group>"; };
+		E84C911729FDF096009DF0E9 /* StoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreView.swift; sourceTree = "<group>"; };
+		E84C911929FDF1BB009DF0E9 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		E84C911D29FE07C4009DF0E9 /* PurchaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseManager.swift; sourceTree = "<group>"; };
 		E85255D229CED9EA0066E884 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		E85255D429CFA6840066E884 /* AppStorageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageExtensions.swift; sourceTree = "<group>"; };
 		E85255D629D039BC0066E884 /* TextExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextExtensions.swift; sourceTree = "<group>"; };
@@ -157,6 +165,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E84C911A29FDF1BB009DF0E9 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +235,7 @@
 		E81D41F129978A8D00835797 /* mInr */ = {
 			isa = PBXGroup;
 			children = (
+				E84C911629FDF070009DF0E9 /* Store */,
 				E84C910B29FCCA74009DF0E9 /* Info.plist */,
 				E8F38EC829D6EFDD00BF5B9B /* mInrRelease.entitlements */,
 				E800748929D37D6900E2E1CD /* Intents */,
@@ -268,6 +278,16 @@
 				E81D421529978A9000835797 /* mInrUITestsLaunchTests.swift */,
 			);
 			path = mInrUITests;
+			sourceTree = "<group>";
+		};
+		E84C911629FDF070009DF0E9 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				E84C911429FDEFAB009DF0E9 /* mINR.storekit */,
+				E84C911729FDF096009DF0E9 /* StoreView.swift */,
+				E84C911D29FE07C4009DF0E9 /* PurchaseManager.swift */,
+			);
+			path = "\bStore";
 			sourceTree = "<group>";
 		};
 		E85255D129CED9D70066E884 /* Extensions */ = {
@@ -317,6 +337,7 @@
 		E8739B4F29A4B7030048E746 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E84C911929FDF1BB009DF0E9 /* StoreKit.framework */,
 				E8739B5029A4B7030048E746 /* WidgetKit.framework */,
 				E8739B5229A4B7030048E746 /* SwiftUI.framework */,
 				E84C90A429FA64BF009DF0E9 /* Intents.framework */,
@@ -375,6 +396,8 @@
 				E8A455A729DA9E2200941191 /* PBXTargetDependency */,
 			);
 			name = mInr;
+			packageProductDependencies = (
+			);
 			productName = mInr;
 			productReference = E81D41EF29978A8D00835797 /* mInr.app */;
 			productType = "com.apple.product-type.application";
@@ -467,6 +490,8 @@
 				Base,
 			);
 			mainGroup = E81D41E629978A8D00835797;
+			packageReferences = (
+			);
 			productRefGroup = E81D41F029978A8D00835797 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -485,6 +510,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E81D420029978A9000835797 /* Preview Assets.xcassets in Resources */,
+				E84C911529FDEFAB009DF0E9 /* mINR.storekit in Resources */,
 				E81D41FC29978A9000835797 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +572,9 @@
 				E85255DB29D2DE480066E884 /* AddWarfarinView.swift in Sources */,
 				E866012B29D3E23200DCD60A /* CoreDataPublisher.swift in Sources */,
 				E85255D329CED9EA0066E884 /* DateExtensions.swift in Sources */,
+				E84C911829FDF096009DF0E9 /* StoreView.swift in Sources */,
 				E866012729D3870B00DCD60A /* mINRDataModel.swift in Sources */,
+				E84C911E29FE07C4009DF0E9 /* PurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

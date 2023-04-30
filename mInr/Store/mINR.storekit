@@ -1,0 +1,66 @@
+{
+  "identifier" : "E173815D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6448668353",
+      "localizations" : [
+        {
+          "description" : "This purchase is enough to get me a coffee!",
+          "displayName" : "Coffee",
+          "locale" : "en_AU"
+        }
+      ],
+      "productID" : "tip_coffee",
+      "referenceName" : "Buy Me a Coffee",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "6448668411",
+      "localizations" : [
+        {
+          "description" : "This purchase is enough to get me a dinner!",
+          "displayName" : "Dinner",
+          "locale" : "en_AU"
+        }
+      ],
+      "productID" : "tip_dinner",
+      "referenceName" : "Buy Me a Dinner",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "6.99",
+      "familyShareable" : false,
+      "internalID" : "6448668516",
+      "localizations" : [
+        {
+          "description" : "This purchase is enough to get me a cider!",
+          "displayName" : "Drink",
+          "locale" : "en_AU"
+        }
+      ],
+      "productID" : "tip_drink",
+      "referenceName" : "Buy Me a Drink",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6448668274",
+    "_askToBuyEnabled" : false,
+    "_developerTeamID" : "CX944Q5V5A",
+    "_lastSynchronizedDate" : 704514959.58088899
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}
