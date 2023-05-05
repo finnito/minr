@@ -10,6 +10,8 @@ import UserNotifications
 
 struct SettingsView: View {
     // Stored preferences
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
+    @AppStorage("primaryAntiCoagulantDose") var primaryAntiCoagulantDose: Int = 4
     @AppStorage("maximumINRRange") var maximumINR: Double = 3.5
     @AppStorage("minimumINRRange") var minimumINR: Double = 2.5
     @AppStorage("graphRange") var graphRange: Int = 14
@@ -31,6 +33,23 @@ struct SettingsView: View {
         NavigationStack {
             VStack {
                 Form {
+                    Section(header: Text("Primary Anticoagulant")) {
+                        HStack {
+                            Text("Medication Name")
+                            TextField(
+                                "Warfarin",
+                                text: $primaryAntiCoagulantName
+                            )
+                        }
+                        HStack {
+                            Text("Dose")
+                            TextField(
+                                "4",
+                                value: $primaryAntiCoagulantDose,
+                                format: .number
+                            )
+                        }
+                    }
                     Section(header: Text("INR Range")) {
                         HStack {
                             Text("Min:")
@@ -68,7 +87,7 @@ struct SettingsView: View {
                     }
                     
                     
-                    Section(header: Text("Warfarin Reminder")) {
+                    Section(header: Text("\(primaryAntiCoagulantName) Reminder")) {
                         Toggle("Enabled", isOn: $warfarinReminderEnabled.onChange(updateWarfarinReminder))
                         HStack {
                             DatePicker(

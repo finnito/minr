@@ -12,9 +12,9 @@ import CoreData
 struct ShortcutsWarfarinDoseEntity: TransientAppEntity {
     var value: Never?
     
-    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Warfarin Dose")
+    static var typeDisplayRepresentation = TypeDisplayRepresentation(name: "Anticoagulant Dose")
     
-    @Property(title: "Warfarin Dose (g)")
+    @Property(title: "Anticoagulant Dose (mg)")
     var dose: String
     
     @Property(title: "Date")
@@ -22,7 +22,7 @@ struct ShortcutsWarfarinDoseEntity: TransientAppEntity {
     
     var displayRepresentation: DisplayRepresentation {
         return DisplayRepresentation(
-            title: "\(dose)g of warfarin on \(date).",
+            title: "\(dose)mg of anticoagulant on \(date).",
             subtitle: ""
         )
     }

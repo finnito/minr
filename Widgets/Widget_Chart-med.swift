@@ -31,6 +31,7 @@ struct WidgetChart: Widget {
 struct ChartWidgetView: View {
     @AppStorage("maximumINRRange") var maximumINR: Double = 3.5
     @AppStorage("minimumINRRange") var minimumINR: Double = 2.5
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     let entry: ChartWidgetEntry
     var body: some View {
         Chart {
@@ -56,8 +57,8 @@ struct ChartWidgetView: View {
             ForEach(entry.anticoagulantDoses) { item in
                 LineMark(
                     x: .value("Date", item.timestamp ?? Date()),
-                    y: .value("Warfarin", item.dose),
-                    series: .value("Measurement", "Warfarin")
+                    y: .value("\(primaryAntiCoagulantName)", item.dose),
+                    series: .value("Measurement", "\(primaryAntiCoagulantName)")
                 )
                 .foregroundStyle(.blue)
                 .interpolationMethod(.linear)
@@ -70,7 +71,7 @@ struct ChartWidgetView: View {
         .chartLegend(position: .overlay, alignment: .topLeading, spacing: 10)
         .chartForegroundStyleScale([
             "INR": Color.red,
-            "Warfarin": Color.blue,
+            "\(primaryAntiCoagulantName)": Color.blue,
             "INR Range": Color.green
         ])
         .chartXAxis {

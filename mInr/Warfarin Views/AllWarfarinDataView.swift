@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AllWarfarinDataView: View {
     @ObservedObject var dataModel = DataManager.shared
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     
     var body: some View {
         NavigationStack{
@@ -18,14 +19,14 @@ struct AllWarfarinDataView: View {
                         VStack(alignment: .leading) {
                             Text(item.timestamp!, formatter: dateOnlyFormatter)
                                 .font(.footnote)
-                            Label("Warfarin: \(item.dose)g", systemImage: "pills.fill")
+                            Label("\(primaryAntiCoagulantName): \(item.dose)g", systemImage: "pills.fill")
                         }
                     }
-                }.onDelete(perform: dataModel.deleteWarfarinItems).navigationTitle("All Warfarin Data")
+                }.onDelete(perform: dataModel.deleteWarfarinItems).navigationTitle("All \(primaryAntiCoagulantName) Data")
             }.toolbar {
                 EditButton()
             }
-        }.navigationTitle("All Warfarin Data")
+        }.navigationTitle("All \(primaryAntiCoagulantName) Data")
     }
 }
 

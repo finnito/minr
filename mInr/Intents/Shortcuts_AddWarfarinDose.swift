@@ -11,13 +11,13 @@ import AppIntents
 import CoreData
 
 struct AddWarfarinDose: AppIntent {
-    static let title: LocalizedStringResource = "Add a warfarin dose."
-    static let description: IntentDescription = "Adds a warfarin dose (g) to your data."
+    static let title: LocalizedStringResource = "Add a anticoagulant dose."
+    static let description: IntentDescription = "Adds a anticoagulant dose (mg) to your data."
     static var parameterSummary: some ParameterSummary {
-        Summary("Add a warfarin dose of \(\.$dose)g for \(\.$date).")
+        Summary("Add an anticoagulant dose of \(\.$dose)mg for \(\.$date).")
     }
 
-    @Parameter(title: "Warfarin Dose (g)")
+    @Parameter(title: "Anticoagulant Dose (mg)")
     var dose: Int
 
     @Parameter(title: "Date")
@@ -33,7 +33,7 @@ struct AddWarfarinDose: AppIntent {
                 )
                 return .result()
             } catch {
-                throw CustomIntentError.message("There was a problem adding your warfarin dose. Sorry about that!")
+                throw CustomIntentError.message("There was a problem adding your anticoagulant dose. Sorry about that!")
             }
         }
         throw CustomIntentError.message("There was a problem parsing the date your gave.")

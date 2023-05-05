@@ -11,6 +11,7 @@ struct ContentView: View {
     @ObservedObject var dataModel = DataManager.shared
     @Environment(\.colorScheme) var colorScheme
     @State private var showWebView = false
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     
     var body: some View {
         NavigationStack {
@@ -24,7 +25,7 @@ struct ContentView: View {
                 WarfarinINRChart()
                     .padding(10)
                 
-                Text("Warfarin Compliance")
+                Text("\(primaryAntiCoagulantName) Compliance")
                     .sectionHeaderStyle()
                     .padding(.top, 10)
                     .padding(.horizontal, 15)

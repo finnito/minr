@@ -12,6 +12,7 @@ struct EditWarfarinEntryView: View {
     @ObservedObject var dataModel = DataManager.shared
     @State var entry: FetchedResults<AntiCoagulantDose>.Element
     @FocusState private var keyboardFocused: Bool
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     
     var body: some View {
         NavigationStack {
@@ -20,7 +21,7 @@ struct EditWarfarinEntryView: View {
                     // These are two-way binded to the variable above
                     // by using a $.
                     HStack {
-                        Label("Warfarin", systemImage: "pills.fill")
+                        Label("\(primaryAntiCoagulantName)", systemImage: "pills.fill")
                         TextField(
                             "4",
                             value: $entry.dose,

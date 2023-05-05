@@ -12,11 +12,12 @@ struct AddWarfarinView: View {
     @ObservedObject var dataModel = DataManager.shared
     @State private var warfarinDose: Int32 = 0
     @State private var warfarinDoseDate = Date()
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     
     var body: some View {
         VStack {
             HStack {
-                Text("Warfarin Dose").sectionHeaderStyle()
+                Text("\(primaryAntiCoagulantName) Dose").sectionHeaderStyle()
                 Spacer()
                 NavigationLink(destination: AllWarfarinDataView()) {
                     Text("All Data")
@@ -33,7 +34,7 @@ struct AddWarfarinView: View {
                 )
                 HStack {
                     HStack {
-                        Label("Warfarin:", systemImage: "pills.fill")
+                        Label("\(primaryAntiCoagulantName):", systemImage: "pills.fill")
                         TextField(
                             "4",
                             value: $warfarinDose,

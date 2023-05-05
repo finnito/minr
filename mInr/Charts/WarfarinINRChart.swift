@@ -13,6 +13,7 @@ struct WarfarinINRChart: View {
     @ObservedObject var dataModel = DataManager.shared
     @Environment(\.colorScheme) var colorScheme
     
+    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
     @AppStorage("maximumINRRange") var maximumINR: Double = 3.5
     @AppStorage("minimumINRRange") var minimumINR: Double = 2.5
     @AppStorage("graphRange") var graphRange: Int = 14
@@ -39,7 +40,7 @@ struct WarfarinINRChart: View {
                 HStack(alignment: .center) {
                     Spacer()
                     Text("INR").foregroundColor(.red).font(.footnote)
-                    Text("Warfarin").foregroundColor(.blue).font(.footnote)
+                    Text("\(primaryAntiCoagulantName)").foregroundColor(.blue).font(.footnote)
                     Text("INR Range").foregroundColor(.green).font(.footnote)
                     Spacer()
                 }.padding(.top, 5)
@@ -79,8 +80,8 @@ struct WarfarinINRChart: View {
                         ForEach(antiCoagulantDoses) { item in
                             LineMark(
                                 x: .value("Date", item.timestamp ?? endDate),
-                                y: .value("Warfarin", item.dose),
-                                series: .value("Measurement", "Warfarin")
+                                y: .value("\(primaryAntiCoagulantName)", item.dose),
+                                series: .value("Measurement", "\(primaryAntiCoagulantName)")
                             )
                             .foregroundStyle(.blue)
                             .interpolationMethod(.linear)
@@ -88,7 +89,7 @@ struct WarfarinINRChart: View {
                             
                             PointMark(
                                 x: .value("Date", item.timestamp ?? endDate),
-                                y: .value("Warfarin", item.dose)
+                                y: .value("\(primaryAntiCoagulantName)", item.dose)
                             )
                             .opacity(0)
                             .annotation(position: .overlay, alignment: .topTrailing, spacing: 10) {
@@ -100,7 +101,7 @@ struct WarfarinINRChart: View {
                     .padding(.horizontal, 5)
                     .chartForegroundStyleScale([
                         "INR": Color.red,
-                        "Warfarin": Color.blue,
+                        "\(primaryAntiCoagulantName)": Color.blue,
                         "INR Range": Color.green
                     ])
                     .chartXAxis {
