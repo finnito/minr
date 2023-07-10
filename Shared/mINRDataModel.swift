@@ -25,6 +25,38 @@ class DataManager: ObservableObject {
         self.antiCoagulantDoses = self.allAntiCoagulantDoses()
     }
     
+    func highestINRInRange(start: Date, end: Date) -> [INRMeasurement] {
+        print("GET: Highest INR measurement in given range.")
+        let request: NSFetchRequest<INRMeasurement> = INRMeasurement.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \INRMeasurement.inr, ascending: false)]
+        request.predicate = NSPredicate(
+            format: "(timestamp >= %@) AND (timestamp <= %@)",
+            argumentArray: [start, end]
+        )
+        do {
+            return try context.fetch(request)
+        } catch let error {
+            print("ERROR: Couldn't fetch highest INR measurement in given range.\n\(error.localizedDescription)")
+            return []
+        }
+    }
+    
+    func highestAntiCoagulantDoseInRange(start: Date, end: Date) -> [AntiCoagulantDose] {
+        print("GET: Highest anticoagulant dose in given range.")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: false)]
+        request.predicate = NSPredicate(
+            format: "(timestamp >= %@) AND (timestamp <= %@)",
+            argumentArray: [start, end]
+        )
+        do {
+            return try context.fetch(request)
+        } catch let error {
+            print("ERROR: Couldn't fetch highest anticoagulant dose in given range.\n\(error.localizedDescription)")
+            return []
+        }
+    }
+    
     func allAntiCoagulantDoses() -> [AntiCoagulantDose] {
         print("GET: All anticoagulant doses.")
         let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
@@ -70,10 +102,12 @@ class DataManager: ObservableObject {
         }
     }
 
-    func addAntiCoagulantDose(dose: Int32, timestamp: Date) throws -> AntiCoagulantDose {
+    func addAntiCoagulantDose(dose: Int32, secondaryDose: Int32, note: String, timestamp: Date) throws -> AntiCoagulantDose {
         print("INSERT: anticoagulant dose for \(timestamp).")
         let newAntiCoagulantDose = AntiCoagulantDose(context: context)
         newAntiCoagulantDose.dose = dose
+        newAntiCoagulantDose.secondaryDose = secondaryDose
+        newAntiCoagulantDose.note = note
         newAntiCoagulantDose.timestamp = timestamp
         do {
             changes.append(timestamp)

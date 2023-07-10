@@ -9,61 +9,112 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var dataModel = DataManager.shared
-    @Environment(\.colorScheme) var colorScheme
+    @ObservedObject var prefs = Prefs.shared
+    
     @State private var showWebView = false
-    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
+    @State private var showAddAnticoagulantSheet = false
+    @State private var showAddINRSheet = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                AddWarfarinView()
-                    .padding(10)
-                
-                AddINRView()
-                    .padding(10)
-                
-                WarfarinINRChart()
-                    .padding(10)
-                
-                Text("\(primaryAntiCoagulantName) Compliance")
-                    .sectionHeaderStyle()
-                    .padding(.top, 10)
-                    .padding(.horizontal, 15)
-            
-                CalendarView(
-                    interval: DateInterval(start: .distantPast, end: Date())
-                )
-                .padding(5)
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(colorScheme == .dark ? .white.opacity(0.1) : .white)
-                        .shadow(
-                            color: Color.gray.opacity(0.25),
-                            radius: 10,
-                            x: 0,
-                            y: 0
-                        )
-                )
-                .padding(.top, 0)
-                .padding(.horizontal, 10)
-                .navigationTitle("Home")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button {
-                        showWebView.toggle()
-                    } label: {
-                        Label("", systemImage: "questionmark.circle")
-                    }.sheet(isPresented: $showWebView) {
-                        SFSafariViewWrapper(url: URL(string: "https://finn.lesueur.nz/minr-help.html")!)
+                VStack {
+                    
+                    // Section
+                    // Add Data Buttons
+                    HStack {
+                        
+                        // Section
+                        // Add Anticoagulant Button
+                        VStack {
+                            Button {
+                                showAddAnticoagulantSheet = true
+                            } label: {
+                                Text("Add \(prefs.primaryAntiCoagulantName)").largeGradientButtonText()
+                            }
+                            .largeGradientButton(
+                                colour1: Color(red: 237/255, green: 33/255, blue: 58/255),
+                                colour2: Color(red: 147/255, green: 41/255, blue: 30/255))
+                            .sheet(isPresented: $showAddAnticoagulantSheet) {
+                                AddWarfarinView()
+                                    .padding(15)
+                                    .presentationDetents([.fraction(K.addDataSheetFraction)])
+                                    .presentationDragIndicator(.visible)
+                            }
+                            
+                            NavigationLink(destination: AllWarfarinDataView()) {
+                                Text("All \(prefs.primaryAntiCoagulantName) Data")
+                            }
+                            .font(.footnote)
+                            .buttonStyle(.bordered)
+                        }
+                        
+                        
+                        // Section
+                        // Add INR Button
+                        VStack {
+                            Button {
+                                showAddINRSheet = true
+                            } label: {
+                                Text("Add INR").largeGradientButtonText()
+                            }
+                            .largeGradientButton(
+                                colour1: Color(red: 0/255, green: 180/255, blue: 219/255),
+                                colour2: Color(red: 0/255, green: 131/255, blue: 176/255))
+                            .sheet(isPresented: $showAddINRSheet) {
+                                AddINRView()
+                                    .padding(15)
+                                    .presentationDetents([.fraction(K.addDataSheetFraction)])
+                                    .presentationDragIndicator(.visible)
+                            }
+                            NavigationLink(destination: AllINRDataView()) {
+                                Text("All INR Data")
+                            }
+                            .font(.footnote)
+                            .buttonStyle(.bordered)
+                        }
                     }
-                    NavigationLink(destination: SettingsView()) {
-                        Label("", systemImage: "gear")
+                    .padding(.horizontal, 20)
+                    
+                    // Section
+                    // Warfarin Chart
+                    Text("Last \(prefs.graphRange) Days").customHeaderStyle()
+                    WarfarinINRChart()
+                        .card()
+                    
+                    // Section
+                    // Medication Compliance Chart
+                    Text("Medication Compliance").customHeaderStyle()
+                    CalendarView(
+                        interval: DateInterval(start: .distantPast, end: Date())
+                    )
+                    .card()
+                    
+                    
+                    // Section
+                    // In-App Purchases
+                    Text("Support The App").customHeaderStyle()
+                    StoreView().card()
+                    
+                    // Section
+                    // Toolbar
+                    // Applies to last element
+                    .navigationTitle("Home")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        Button {
+                            showWebView.toggle()
+                        } label: {
+                            Label("", systemImage: "questionmark.circle")
+                        }.sheet(isPresented: $showWebView) {
+                            SFSafariViewWrapper(url: URL(string: K.helpURL)!)
+                        }
+                        NavigationLink(destination: SettingsView()) {
+                            Label("", systemImage: "gear")
+                        }
                     }
                 }
-                
-                StoreView()
-                    .padding(10)
-            }.background(Color(UIColor.systemGroupedBackground))
+            }
         }
     }
 }

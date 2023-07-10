@@ -9,19 +9,16 @@ import SwiftUI
 import CoreData
 
 struct AddINRView: View {
-    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var dataModel = DataManager.shared
-    @State private var inrMeasurement: Double = 0.0
+    @ObservedObject var prefs = Prefs.shared
     @State private var inrMeasurementDate = Date()
+    @FocusState private var fieldFocused: Bool
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
             HStack {
-                Text("INR Measurement").sectionHeaderStyle()
-                Spacer()
-                NavigationLink(destination: AllINRDataView()) {
-                    Text("All Data")
-                }
+                Text("Add INR Measurement").sheetHeaderStyle()
                 .font(.footnote)
             }.padding(.horizontal, 5)
             VStack {
@@ -31,42 +28,39 @@ struct AddINRView: View {
                     displayedComponents: [.date, .hourAndMinute]
                 )
                 HStack {
-                    Label("INR:", systemImage: "testtube.2")
+                    Label("INR", systemImage: K.SFSymbols.inr)
+                    Spacer()
                     TextField(
                         "1.5",
-                        value: $inrMeasurement,
+                        value: prefs.$inrMeasurement,
                         format: .number
                     )
                     .keyboardType(.decimalPad)
-                    
+                    .multilineTextAlignment(.trailing)
+                    .focused($fieldFocused)
+                    .onAppear {
+                        fieldFocused = true
+                    }
+                }
+                HStack {
+                    Spacer()
                     Button(action: {
                         withAnimation {
                             do {
-                                _ = try dataModel.addINRMeasurement(inr: inrMeasurement, timestamp: inrMeasurementDate)
-                                hideKeyboard()
-                                self.inrMeasurement = 0.0
-                                self.inrMeasurementDate = Date()
+                                _ = try dataModel.addINRMeasurement(inr: prefs.inrMeasurement, timestamp: inrMeasurementDate)
+                                presentationMode.wrappedValue.dismiss()
                             } catch let error {
                                 print("Couldn't add INR measurement: \(error.localizedDescription)")
                             }
                         }
                     }, label: {
-                        Label("Add", systemImage: "cross.circle")
+                        Label("Add", systemImage: K.SFSymbols.add)
                     })
                     .buttonStyle(.borderedProminent)
                 }
             }
             .padding(5)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(colorScheme == .dark ? .white.opacity(0.1) : .white)
-                    .shadow(
-                        color: Color.gray.opacity(0.25),
-                        radius: 10,
-                        x: 0,
-                        y: 0
-                    )
-            )
+            Spacer()
         }
     }
 }

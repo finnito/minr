@@ -7,27 +7,10 @@
 
 import SwiftUI
 import UserNotifications
+import WidgetKit
 
 struct SettingsView: View {
-    // Stored preferences
-    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
-    @AppStorage("primaryAntiCoagulantDose") var primaryAntiCoagulantDose: Int = 4
-    @AppStorage("maximumINRRange") var maximumINR: Double = 3.5
-    @AppStorage("minimumINRRange") var minimumINR: Double = 2.5
-    @AppStorage("graphRange") var graphRange: Int = 14
-    
-    @AppStorage("warfarinReminderEnabled") var warfarinReminderEnabled: Bool = false
-    @AppStorage("warfarinReminderTime") var warfarinReminderTime = Date()
-    @AppStorage("warfarinReminderInterval") var warfarinReminderInterval: Int = 1
-    @AppStorage("warfarinReminderIdentifier") var warfarinReminderIdentifier: String = ""
-    
-//    @AppStorage("inrReminderEnabled") var inrReminderEnabled: Bool = false
-//    @AppStorage("inrReminderTime") var inrReminderTime = Date()
-//    @AppStorage("inrReminderInterval") var inrReminderInterval: Int = 7
-//    @AppStorage("inrReminderIdentifier") var inrReminderIdentifier: String = ""
-    
-    @AppStorage("lightAccentColour") var lightAccentColour: Color = .red
-    @AppStorage("darkAccentColour") var darkAccentColour: Color = .yellow
+    @ObservedObject var prefs = Prefs.shared
 
     var body: some View {
         NavigationStack {
@@ -35,36 +18,43 @@ struct SettingsView: View {
                 Form {
                     Section(header: Text("Primary Anticoagulant")) {
                         HStack {
-                            Text("Medication Name")
+                            Text("Medication Name: ")
                             TextField(
                                 "Warfarin",
-                                text: $primaryAntiCoagulantName
-                            )
-                        }
-                        HStack {
-                            Text("Dose")
-                            TextField(
-                                "4",
-                                value: $primaryAntiCoagulantDose,
-                                format: .number
+                                text: prefs.$primaryAntiCoagulantName
                             )
                         }
                     }
+                    
+                    Section(header: Text("Secondary Anticoagulant")) {
+                        Toggle("Enabled", isOn: prefs.$secondaryAntiCoagulantEnabled)
+                        HStack {
+                            Text("Medication Name: ")
+                            TextField(
+                                "Aspirin",
+                                text: prefs.$secondaryAntiCoagulantName
+                            )
+                        }.disabled(!prefs.secondaryAntiCoagulantEnabled)
+                    }
+                    
                     Section(header: Text("INR Range")) {
                         HStack {
                             Text("Min:")
                             TextField(
                                 "3.5",
-                                value: $minimumINR,
+                                value: prefs.$minimumINR,
                                 format: .number
                             )
                             .keyboardType(.numberPad)
+                            .onChange(of: prefs.minimumINR) { newMinimumINR in
+                                WidgetCenter.shared.reloadAllTimelines()
+                            }
                         }
                         HStack {
                             Text("Max:")
                             TextField(
                                 "3.5",
-                                value: $maximumINR,
+                                value: prefs.$maximumINR,
                                 format: .number
                             )
                             .keyboardType(.numberPad)
@@ -78,7 +68,7 @@ struct SettingsView: View {
                             Spacer()
                             TextField(
                                 "14",
-                                value: $graphRange,
+                                value: prefs.$graphRange,
                                 format: .number
                             )
                             .keyboardType(.numberPad)
@@ -87,108 +77,71 @@ struct SettingsView: View {
                     }
                     
                     
-                    Section(header: Text("\(primaryAntiCoagulantName) Reminder")) {
-                        Toggle("Enabled", isOn: $warfarinReminderEnabled.onChange(updateWarfarinReminder))
+                    Section(header: Text("Medication Reminder")) {
+                        Toggle("Enabled", isOn: prefs.$warfarinReminderEnabled.onChange(updateWarfarinReminder))
                         HStack {
                             DatePicker(
                                 "Time",
-                                selection: $warfarinReminderTime.onChange(updateWarfarinReminder),
+                                selection: prefs.$warfarinReminderTime.onChange(updateWarfarinReminder),
                                 displayedComponents: [.hourAndMinute]
                             )
-                        }.disabled(!warfarinReminderEnabled)
+                        }.disabled(!prefs.warfarinReminderEnabled)
                     }
-                    
-//                    Section(header: Text("INR Reminder")) {
-//                        Toggle("Enabled", isOn: $inrReminderEnabled.onChange(updateINRReminder))
-//                        HStack {
-//                            DatePicker(
-//                                "Start",
-//                                selection: $inrReminderTime.onChange(updateINRReminder),
-//                                displayedComponents: [.hourAndMinute]
-//                            )
-//                        }.disabled(!inrReminderEnabled)
-//                        HStack {
-//                            Text("Interval:")
-//                            TextField(
-//                                "7",
-//                                value: $inrReminderInterval.onChange(updateINRReminder),
-//                                format: .number
-//                            ).keyboardType(.numberPad)
-//                            Text("days")
-//                        }.disabled(!inrReminderEnabled)
-//                    }
                     
                     Section(header: Text("Accent Colour")) {
                         ColorPicker(
                             "Light Accent Colour",
-                            selection: $lightAccentColour,
+                            selection: prefs.$lightAccentColour,
                             supportsOpacity: true
                         )
                         ColorPicker(
                             "Dark Accent Colour",
-                            selection: $darkAccentColour,
+                            selection: prefs.$darkAccentColour,
                             supportsOpacity: true
                         )
+                    }
+                    
+                    Section(header: Text("Data Export")) {
+                        NavigationLink(destination: DataExportView()) {
+                            Text("Export Data")
+                        }
                     }
                 }
             }
         }.navigationTitle("Settings")
     }
     
-//    func updateINRReminder() {
-//        if (!inrReminderEnabled) {
-//            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [inrReminderIdentifier])
-////            printUpcomingReminders()
-//            return
-//        }
-//        
-//        // Remove old timer
-//        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [inrReminderIdentifier])
-//        
-//        // Create new timer
-//        let content = UNMutableNotificationContent()
-//        content.title = "mINR"
-//        content.body = "Check your INR."
-//        content.sound = UNNotificationSound.default
-//        var components = Calendar.current.dateComponents([.hour, .minute], from: inrReminderTime)
-//        components.weekday = 1
-//        components.weekOfMonth = 2
-//        let trigger = UNCalendarNotificationTrigger(
-//            dateMatching: components,
-//            repeats: true
-//        )
-//        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-//        inrReminderIdentifier = request.identifier // Store identifier
-//        
-//        // Add timer
-//        UNUserNotificationCenter.current().add(request)
-//        
-////        printUpcomingReminders()
-//        
-//    }
-    
     func updateWarfarinReminder() {
-        if (!warfarinReminderEnabled) {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [warfarinReminderIdentifier])
-//            printUpcomingReminders()
+        if (!prefs.warfarinReminderEnabled) {
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [prefs.warfarinReminderIdentifier])
             return
         }
         
         // Remove old timer
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [warfarinReminderIdentifier])
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [prefs.warfarinReminderIdentifier])
+        
+        // Last dose
+        let lastDose = DataManager.shared.mostRecentAnticoagulantDose()
+        var lastDoseString: String
+        if lastDose.count == 1 {
+            lastDoseString = "Your last dose was \(lastDose[0].dose)mg."
+        } else {
+            lastDoseString = ""
+        }
         
         // Create new timer
         let content = UNMutableNotificationContent()
         content.title = "mINR"
-        content.body = "Take warfarin."
+        content.body = "Take \(prefs.primaryAntiCoagulantName). \(lastDoseString)"
         content.sound = UNNotificationSound.default
-        let components = Calendar.current.dateComponents([.hour, .minute], from: warfarinReminderTime)
+        let components = Calendar.current.dateComponents([.hour, .minute], from: prefs.warfarinReminderTime)
         let trigger = UNCalendarNotificationTrigger(
             dateMatching: components,
             repeats: true
         )
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        warfarinReminderIdentifier = request.identifier // Store identifier
+        prefs.warfarinReminderIdentifier = request.identifier // Store identifier
         
         // Add timer
         UNUserNotificationCenter.current().add(request)

@@ -10,25 +10,23 @@ import SwiftUI
 struct EditINREntryView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var dataModel = DataManager.shared
-    @State var entry: FetchedResults<INRMeasurement>.Element
-    @FocusState private var keyboardFocused: Bool
+    @ObservedObject var entry: FetchedResults<INRMeasurement>.Element
+    @FocusState private var fieldFocused: Bool
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
                     HStack {
-                        Label("INR", systemImage: "testtube.2")
+                        Label("INR", systemImage: K.SFSymbols.inr)
                         TextField(
                             "1.5",
                             value: $entry.inr,
                             format: .number
                         ).keyboardType(.decimalPad)
-                        .focused($keyboardFocused)
+                        .focused($fieldFocused)
                         .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                keyboardFocused = true
-                            }
+                            fieldFocused = true
                         }
                     }
                     HStack {
@@ -37,17 +35,11 @@ struct EditINREntryView: View {
                             dataModel.updateINREntry(item: entry)
                             dismiss()
                         }, label: {
-                            Label("Save", systemImage: "checkmark.diamond.fill")
+                            Label("Save", systemImage: K.SFSymbols.save)
                         })
                     }
                 }
-            }.navigationTitle(Text(entry.timestamp!, formatter: itemFormatter))
+            }.navigationTitle(Text(entry.timestamp!, formatter: K.entryDateFormatter))
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    return formatter
-}()

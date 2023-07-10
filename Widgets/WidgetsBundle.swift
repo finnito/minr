@@ -14,5 +14,6 @@ struct WidgetsBundle: WidgetBundle {
     var body: some Widget {
         WidgetChart()
         WidgetStatus()
+        WidgetStatusAccessory()
     }
 }

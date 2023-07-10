@@ -18,3 +18,25 @@ extension Binding {
         )
     }
 }
+
+// Allows for an optional string in TextField.
+// Usage: TextField("Optional Note", text: $entry.note.boundString)
+// Source: https://medium.com/geekculture/making-the-most-of-textfields-in-swiftui-5fd80d612502
+extension Optional where Wrapped == String {
+    var _boundString: String? {
+        get {
+            return self
+        }
+        set {
+            self = newValue
+        }
+    }
+    public var boundString: String {
+        get {
+            return _boundString ?? ""
+        }
+        set {
+            _boundString = newValue.isEmpty ? nil : newValue
+        }
+    }
+}

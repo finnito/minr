@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AllWarfarinDataView: View {
     @ObservedObject var dataModel = DataManager.shared
-    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
+    @ObservedObject var prefs = Prefs.shared
     
     var body: some View {
         NavigationStack{
@@ -17,16 +17,30 @@ struct AllWarfarinDataView: View {
                 ForEach(dataModel.allAntiCoagulantDoses()) { item in
                     NavigationLink(destination: EditWarfarinEntryView(entry: item)) {
                         VStack(alignment: .leading) {
-                            Text(item.timestamp!, formatter: dateOnlyFormatter)
+                            Text(item.timestamp!, formatter: K.entryDateFormatter)
                                 .font(.footnote)
-                            Label("\(primaryAntiCoagulantName): \(item.dose)g", systemImage: "pills.fill")
+                            if (prefs.secondaryAntiCoagulantEnabled) {
+                                Label("\(prefs.primaryAntiCoagulantName): \(item.dose)mg\n\(prefs.secondaryAntiCoagulantName): \(item.secondaryDose)mg", systemImage: K.SFSymbols.anticoagulant)
+                            } else {
+                                Label("\(prefs.primaryAntiCoagulantName): \(item.dose)mg", systemImage: K.SFSymbols.anticoagulant)
+                            }
+                            
+                            if item.note != "" {
+                                HStack {
+                                    Label("\(item.note ?? "")", systemImage: K.SFSymbols.note)
+                                }
+                            }
                         }
                     }
-                }.onDelete(perform: dataModel.deleteWarfarinItems).navigationTitle("All \(primaryAntiCoagulantName) Data")
+                }.onDelete(perform: dataModel.deleteWarfarinItems).navigationTitle("All \(prefs.primaryAntiCoagulantName) Data")
             }.toolbar {
                 EditButton()
             }
-        }.navigationTitle("All \(primaryAntiCoagulantName) Data")
+            .modifier(EmptyDataModifier(
+                items: dataModel.allAntiCoagulantDoses(),
+                placeholder: Text("No \(prefs.primaryAntiCoagulantName) Entries").font(.title))
+            )
+        }.navigationTitle("All \(prefs.primaryAntiCoagulantName) Data")
     }
 }
 

@@ -16,24 +16,22 @@ struct AllINRDataView: View {
                 ForEach(dataModel.inrMeasurements) { item in
                     NavigationLink(destination: EditINREntryView(entry: item)) {
                         VStack(alignment: .leading) {
-                            Text(item.timestamp!, formatter: itemFormatter)
+                            Text(item.timestamp!, formatter: K.entryDateFormatter)
                                 .font(.footnote)
-                            Label("INR: \(item.inr, specifier: "%.1f")", systemImage: "testtube.2")
+                            Label("INR: \(item.inr, specifier: "%.1f")", systemImage: K.SFSymbols.inr)
                         }
                     }
                 }.onDelete(perform: dataModel.deleteINRItems).navigationTitle("All INR Data")
             }.toolbar {
                 EditButton()
             }
+            .modifier(EmptyDataModifier(
+                items: dataModel.inrMeasurements,
+                placeholder: Text("No INR Entries").font(.title))
+            )
         }.navigationTitle("All INR Data")
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    return formatter
-}()
 
 struct AllINRDataView_Previews: PreviewProvider {
     static var previews: some View {

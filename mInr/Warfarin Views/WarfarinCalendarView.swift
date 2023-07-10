@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct CalendarView: UIViewRepresentable {
-    let interval: DateInterval
     @ObservedObject var dataModel = DataManager.shared
-    @AppStorage("lightAccentColour") var lightAccentColour: Color = .red
-    @AppStorage("darkAccentColour") var darkAccentColour: Color = .yellow
+    
+    let interval: DateInterval
     
     func makeUIView(context: Context) -> UICalendarView {
         let view = UICalendarView()
@@ -51,6 +50,7 @@ struct CalendarView: UIViewRepresentable {
                 return nil
             }
             
+            // MARK: Anticoagulant Dose Decorations
             let antiCoagulantDose = self.parent.dataModel.allAntiCoagulantDoses().first(where: { $0.timestamp?.startOfDay == dateComponents.date?.startOfDay })
             
             let font = UIFont.systemFont(ofSize: 12)
@@ -66,7 +66,7 @@ struct CalendarView: UIViewRepresentable {
             
             return .customView {
                 let label = UILabel()
-                label.text = "\(antiCoagulantDose!.dose)g"
+                label.text = "\(antiCoagulantDose!.dose)mg"
                 label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
                 return label
             }

@@ -8,32 +8,51 @@
 import SwiftUI
 
 struct EditWarfarinEntryView: View {
-    @Environment(\.dismiss) var dismiss
     @ObservedObject var dataModel = DataManager.shared
-    @State var entry: FetchedResults<AntiCoagulantDose>.Element
-    @FocusState private var keyboardFocused: Bool
-    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
+    @ObservedObject var prefs = Prefs.shared
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var entry: FetchedResults<AntiCoagulantDose>.Element
+    @FocusState private var fieldFocused: Bool
     
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    // These are two-way binded to the variable above
-                    // by using a $.
                     HStack {
-                        Label("\(primaryAntiCoagulantName)", systemImage: "pills.fill")
-                        TextField(
-                            "4",
-                            value: $entry.dose,
-                            format: .number
-                        )
-                        .keyboardType(.decimalPad)
-                        .focused($keyboardFocused)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                keyboardFocused = true
-                            }
+                        Label("\(prefs.primaryAntiCoagulantName):", systemImage: K.SFSymbols.anticoagulant)
+                        Stepper(value: $entry.dose, in: 0...30, step: 1) {
+                            Text("\(entry.dose)mg")
                         }
+//                        TextField(
+//                            "4",
+//                            value: $entry.dose,
+//                            format: .number
+//                        )
+//                        .keyboardType(.decimalPad)
+//                        .focused($fieldFocused)
+//                        .onAppear {
+//                            fieldFocused = true
+//                        }
+                    }
+                    
+                    if (prefs.secondaryAntiCoagulantEnabled) {
+                        HStack {
+                            Label("\(prefs.secondaryAntiCoagulantName):", systemImage: K.SFSymbols.anticoagulant)
+                            Stepper(value: $entry.secondaryDose, in: 0...30, step: 1) {
+                                Text("\(entry.secondaryDose)mg")
+                            }
+//                            TextField(
+//                                "4",
+//                                value: $entry.secondaryDose,
+//                                format: .number
+//                            )
+//                            .keyboardType(.decimalPad)
+                        }
+                    }
+                    
+                    HStack {
+                        Label("Note:", systemImage: K.SFSymbols.note)
+                        TextField("Optional Note", text: $entry.note.boundString)
                     }
                     
                     HStack {
@@ -42,17 +61,11 @@ struct EditWarfarinEntryView: View {
                             dataModel.updateAnticoagulantEntry(item: entry)
                             dismiss()
                         }, label: {
-                            Label("Save", systemImage: "checkmark.diamond.fill")
+                            Label("Save", systemImage: K.SFSymbols.save)
                         })
                     }
                 }
-            }.navigationTitle(Text(entry.timestamp!, formatter: itemFormatter))
+            }.navigationTitle(Text(entry.timestamp!, formatter: K.entryDateFormatter))
         }
     }
 }
-
-private let itemFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    return formatter
-}()

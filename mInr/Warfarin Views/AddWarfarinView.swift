@@ -8,69 +8,71 @@
 import SwiftUI
 
 struct AddWarfarinView: View {
-    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var dataModel = DataManager.shared
-    @State private var warfarinDose: Int32 = 0
+    @ObservedObject var prefs = Prefs.shared
+    
     @State private var warfarinDoseDate = Date()
-    @AppStorage("primaryAntiCoagulantName") var primaryAntiCoagulantName: String = "Warfarin"
+    @State private var note: String = ""
+    
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack {
+            Text("Add Anticoagulant Dose").sheetHeaderStyle()
+            
+            DatePicker(
+                "Date",
+                selection: $warfarinDoseDate,
+                displayedComponents: [.date, .hourAndMinute]
+            )
+            
+            // SECTION: Primary anticoagulant
             HStack {
-                Text("\(primaryAntiCoagulantName) Dose").sectionHeaderStyle()
-                Spacer()
-                NavigationLink(destination: AllWarfarinDataView()) {
-                    Text("All Data")
+                Label("\(prefs.primaryAntiCoagulantName):", systemImage: K.SFSymbols.anticoagulant)
+                Stepper(value: prefs.$primaryAntiCoagulantDose, in: 0...30, step: 1) {
+                    Text("\(prefs.primaryAntiCoagulantDose)mg")
                 }
-                .font(.footnote)
-            }.padding(.horizontal, 5)
+            }
             
-            
-            VStack {
-                DatePicker(
-                    "Date",
-                    selection: $warfarinDoseDate,
-                    displayedComponents: [.date, .hourAndMinute]
-                )
+            if (prefs.secondaryAntiCoagulantEnabled) {
                 HStack {
-                    HStack {
-                        Label("\(primaryAntiCoagulantName):", systemImage: "pills.fill")
-                        TextField(
-                            "4",
-                            value: $warfarinDose,
-                            format: .number
-                        )
-                        .keyboardType(.numberPad)
-                        
-                        Button(action: {
-                            withAnimation {
-                                do {
-                                    _ = try dataModel.addAntiCoagulantDose(dose: warfarinDose, timestamp: warfarinDoseDate)
-                                    hideKeyboard()
-                                    self.warfarinDose = 0
-                                    self.warfarinDoseDate = Date()
-                                } catch let error {
-                                    print("Couldn't add anticoagulantdose: \(error.localizedDescription)")
-                                }
-                            }
-                        }, label: {
-                            Label("Add", systemImage: "cross.circle")
-                        })
-                        .buttonStyle(.borderedProminent)
+                    Label("\(prefs.secondaryAntiCoagulantName):", systemImage: K.SFSymbols.anticoagulant)
+                    Stepper(value: prefs.$secondaryAntiCoagulantDose, in: 0...30, step: 1) {
+                        Text("\(prefs.secondaryAntiCoagulantDose)mg")
                     }
                 }
             }
+            
+            // SECTION: Note
+            HStack {
+                Label("Note:", systemImage: K.SFSymbols.note)
+                TextField("Optional Note", text: $note)
+            }
+            
+            // SECTION: Button
+            HStack {
+                Spacer()
+                Button(action: {
+                    withAnimation {
+                        do {
+                            _ = try dataModel.addAntiCoagulantDose(
+                                dose: Int32(prefs.primaryAntiCoagulantDose),
+                                secondaryDose: prefs.secondaryAntiCoagulantEnabled ? Int32(prefs.secondaryAntiCoagulantDose) : 0,
+                                note: note,
+                                timestamp: warfarinDoseDate
+                            )
+                            presentationMode.wrappedValue.dismiss()
+                        } catch let error {
+                            print("Couldn't add anticoagulantdose: \(error.localizedDescription)")
+                        }
+                    }
+                }, label: {
+                    Label("Add", systemImage: K.SFSymbols.add)
+                })
+                .buttonStyle(.borderedProminent)
+            }
             .padding(5)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(colorScheme == .dark ? .white.opacity(0.1) : .white)
-                    .shadow(
-                        color: Color.gray.opacity(0.25),
-                        radius: 10,
-                        x: 0,
-                        y: 0
-                    )
-            )
+            Spacer()
         }
     }
 }

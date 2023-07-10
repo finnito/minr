@@ -11,10 +11,9 @@ import SwiftUI
 struct mInrApp: App {
     @Environment(\.scenePhase) var scenePhase
     @Environment(\.colorScheme) var colorScheme
-    @AppStorage("lightAccentColour") var lightAccentColour: Color = .red
-    @AppStorage("darkAccentColour") var darkAccentColour: Color = .yellow
     @StateObject private var dataModel = DataManager()
     @StateObject private var purchaseManager = PurchaseManager()
+    @StateObject var prefs: Prefs = Prefs()
     
     let persistenceController = PersistenceController.shared
     
@@ -48,9 +47,11 @@ struct mInrApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+//                .environment(\.prefs, prefs)
+                .environmentObject(prefs)
                 .environmentObject(dataModel)
                 .environmentObject(purchaseManager)
-                .tint(getCurrentSystemColorScheme() == .dark ? darkAccentColour : lightAccentColour)
+                .tint(getCurrentSystemColorScheme() == .dark ? prefs.darkAccentColour : prefs.lightAccentColour)
                 .task {
                     await purchaseManager.updatePurchasedProducts()
                 }

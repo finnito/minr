@@ -41,10 +41,14 @@ struct StatusWidgetView: View {
                     }
                     .font(.title)
                     .fontWeight(.heavy)
-                    .padding(.leading, 10)
+                    .padding(.leading, 5)
                     
                     if entry.inrPlaceholder {
                         Text("NA days ago")
+                            .font(.footnote)
+                            .italic()
+                    } else if entry.daysSinceINR == 1 {
+                        Text("\(entry.daysSinceINR) day ago")
                             .font(.footnote)
                             .italic()
                     } else {
@@ -55,9 +59,9 @@ struct StatusWidgetView: View {
                 }
                 .padding(.bottom, 10)
                 .frame(width: metrics.size.width, height: metrics.size.height * 0.5)
-                .background(.red.opacity(0.4))
+                .background(.blue.opacity(0.4))
                 .overlay(alignment: .bottomLeading) {
-                    Text("\(Image(systemName: "testtube.2")) INR")
+                    Text("\(Image(systemName: K.SFSymbols.inr)) INR")
                         .font(.system(.caption, design: .monospaced).smallCaps())
                         .padding(.horizontal, 7)
                         .padding(.vertical, 5)
@@ -73,12 +77,16 @@ struct StatusWidgetView: View {
                             Text("\(entry.anticoagulantDose[0].dose)mg")
                         }
                     }
-                    .font(.title)
+                    .font(entry.anticoagulantDose[0].dose < 10 ? .title : .title2)
                     .fontWeight(.heavy)
-                    .padding(.leading, 10)
+                    .padding(.leading, 5)
                     
                     if entry.acdPlaceholder {
                         Text("NA days ago")
+                            .font(.footnote)
+                            .italic()
+                    } else if entry.daysSinceWarfarin == 1 {
+                        Text("\(entry.daysSinceWarfarin) day ago")
                             .font(.footnote)
                             .italic()
                     } else {
@@ -88,15 +96,16 @@ struct StatusWidgetView: View {
                     }
                 }
                 .padding(.top, 10)
-                .frame(width: metrics.size.width, height: metrics.size.height * 0.5)
+                .frame(width: metrics.size.width, height: metrics.size.height * 0.5)                
+                .background(.red.opacity(0.4))
                 .overlay(alignment: .topTrailing) {
-                    Text("Warfarin \(Image(systemName: "pills.fill"))")
+                    Text("\(entry.primaryAntiCoagulantName) \(Image(systemName: K.SFSymbols.anticoagulant))")
                         .font(.system(.caption, design: .monospaced).smallCaps())
                         .padding(.horizontal, 7)
                         .padding(.vertical, 5)
                         .opacity(0.75)
                 }
-                .background(.blue.opacity(0.4))
+                
             }
         }
     }
@@ -107,6 +116,7 @@ struct StatusWidgetEntry: TimelineEntry {
     let providerInfo: String
     let inrMeasurement: [INRMeasurement]
     let anticoagulantDose: [AntiCoagulantDose]
+    let primaryAntiCoagulantName: String
     let inrPlaceholder: Bool
     let acdPlaceholder: Bool
     let daysSinceINR: Int
@@ -116,6 +126,8 @@ struct StatusWidgetEntry: TimelineEntry {
 struct StatusWidgetTimelineProvider: TimelineProvider {
     typealias Entry = StatusWidgetEntry
     let model = DataManager.shared
+    @ObservedObject var prefs = Prefs.shared
+    
     init() {
         print("Initialising StatusWidgetTimelineProvider")
     }
@@ -126,6 +138,7 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
             providerInfo: "placeholder",
             inrMeasurement: [INRMeasurement](),
             anticoagulantDose: [AntiCoagulantDose](),
+            primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
             inrPlaceholder: true,
             acdPlaceholder: true,
             daysSinceINR: 0,
@@ -143,16 +156,21 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
         var acdPlaceholder = false
         let latestINR = model.mostRecentINRMeasurement()
         let latestACD = model.mostRecentAnticoagulantDose()
+        var daysSinceINR = 0
+        var daysSinceACD = 0
         
         if latestINR.count == 0 { inrPlaceholder = true }
-        
         if latestACD.count == 0 { acdPlaceholder = true }
+        
+        if !inrPlaceholder { daysSinceINR = Calendar.current.numberOfDaysBetween(latestINR[0].timestamp ?? Date(), and: Date()) }
+        if !acdPlaceholder { daysSinceACD = Calendar.current.numberOfDaysBetween(latestACD[0].timestamp ?? Date(), and: Date()) }
         
         entry = StatusWidgetEntry(
             date: Date(),
             providerInfo: "snapshot",
             inrMeasurement: model.mostRecentINRMeasurement(),
             anticoagulantDose: model.mostRecentAnticoagulantDose(),
+            primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
             inrPlaceholder: inrPlaceholder,
             acdPlaceholder: acdPlaceholder,
             daysSinceINR: 0,
@@ -186,6 +204,7 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
             providerInfo: "timeline",
             inrMeasurement: model.mostRecentINRMeasurement(),
             anticoagulantDose: model.mostRecentAnticoagulantDose(),
+            primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
             inrPlaceholder: inrPlaceholder,
             acdPlaceholder: acdPlaceholder,
             daysSinceINR: daysSinceINR,
