@@ -157,7 +157,7 @@ struct ContentView: View {
                         }
                     }
                 }
-            }
+            }.background(Color(UIColor.systemGray6))
         }.tint(colorScheme == .dark ? prefs.darkAccentColour : prefs.lightAccentColour)
     }
 }
