@@ -24,6 +24,7 @@ struct WidgetStatus: Widget {
         .configurationDisplayName("Status Widget")
         .description("Display your anticoagulant and INR status at a glance.")
         .supportedFamilies([.systemSmall])
+        .contentMarginsDisabled()
     }
 }
 
@@ -108,6 +109,12 @@ struct StatusWidgetView: View {
                         .opacity(0.75)
                 }
                 
+            }
+        }
+        .containerBackground(for: .widget) {
+            VStack(spacing: 0) {
+                entry.prefs.chartINRColor.opacity(0.4)
+                entry.prefs.chartAnticoagulantColor.opacity(0.4)
             }
         }
     }

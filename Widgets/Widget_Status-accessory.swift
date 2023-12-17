@@ -77,6 +77,7 @@ struct StatusAccessoryWidgetView: View {
             }
         }
 //        }
+        .containerBackground(.clear, for: .widget)
     }
 }
     

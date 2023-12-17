@@ -25,6 +25,7 @@ struct WidgetChart: Widget {
         .configurationDisplayName("Chart")
         .description("Display your anticoagulantion doses and INR on a chart.")
         .supportedFamilies([.systemMedium])
+        .contentMarginsDisabled()
     }
 }
 
