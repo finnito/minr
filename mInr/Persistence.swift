@@ -53,6 +53,9 @@ struct PersistenceController {
         container = NSPersistentCloudKitContainer(name: "mInr")
         let storeURL = URL.storeURL(for: "group.minr", databaseName: "mInr")
         let storeDescription = NSPersistentStoreDescription(url: storeURL)
+        storeDescription.shouldAddStoreAsynchronously = true
+        storeDescription.shouldMigrateStoreAutomatically = true
+        storeDescription.shouldInferMappingModelAutomatically = true
         container.persistentStoreDescriptions = [storeDescription]
         
         if inMemory {
