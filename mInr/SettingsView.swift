@@ -23,6 +23,10 @@ struct SettingsView: View {
                                 "Warfarin",
                                 text: prefs.$primaryAntiCoagulantName
                             )
+                            .onChange(of: prefs.primaryAntiCoagulantName) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
                         }
                     }
                     
@@ -34,6 +38,10 @@ struct SettingsView: View {
                                 "Aspirin",
                                 text: prefs.$secondaryAntiCoagulantName
                             )
+                            .onChange(of: prefs.secondaryAntiCoagulantName) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
                         }.disabled(!prefs.secondaryAntiCoagulantEnabled)
                     }
                     
@@ -45,9 +53,9 @@ struct SettingsView: View {
                                 value: prefs.$minimumINR,
                                 format: .number
                             )
-                            .keyboardType(.numberPad)
-                            .onChange(of: prefs.minimumINR) { newMinimumINR in
+                            .onChange(of: prefs.minimumINR) {
                                 WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
                             }
                         }
                         HStack {
@@ -57,22 +65,10 @@ struct SettingsView: View {
                                 value: prefs.$maximumINR,
                                 format: .number
                             )
-                            .keyboardType(.numberPad)
-                        }
-                    }
-                    
-                    
-                    Section(header: Text("Graph Range")) {
-                        HStack {
-                            Text("Range:")
-                            Spacer()
-                            TextField(
-                                "14",
-                                value: prefs.$graphRange,
-                                format: .number
-                            )
-                            .keyboardType(.numberPad)
-                            Text("days")
+                            .onChange(of: prefs.maximumINR) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
                         }
                     }
                     
@@ -107,7 +103,81 @@ struct SettingsView: View {
                         )
                     }
                     
-                    Section(header: Text("Data Export")) {
+                    Section(header: Label("Graph", systemImage: K.SFSymbols.graph)) {
+                        Text("PREVIEW: Last \(prefs.graphRange) Days")
+                            .fontWeight(.bold)
+                            .listRowSeparator(.hidden)
+                        WarfarinINRChart()
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                .fill(colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
+                            )
+                            .padding(.horizontal, 0)
+                        
+                        HStack {
+                            Text("Range:")
+                            Spacer()
+                            TextField(
+                                "14",
+                                value: prefs.$graphRange,
+                                format: .number
+                            )
+                            Text("days")
+                        }
+                        HStack {
+                            Text("Point Spacing:")
+                            Spacer()
+                            TextField(
+                                "14",
+                                value: prefs.$chartPointWidth,
+                                format: .number
+                            )
+                        }
+                        HStack {
+                            ColorPicker(
+                                "Anticoagulant Colour",
+                                selection: prefs.$chartAnticoagulantColor,
+                                supportsOpacity: false
+                            )
+                            .onChange(of: prefs.chartAnticoagulantColor) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
+                        }
+                        HStack {
+                            ColorPicker(
+                                "Secondary Anticoagulant Colour",
+                                selection: prefs.$chartSecondaryAnticoagulantColor,
+                                supportsOpacity: false
+                            )
+                            .onChange(of: prefs.chartSecondaryAnticoagulantColor) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
+                        }
+                        HStack {
+                            ColorPicker(
+                                "INR Colour",
+                                selection: prefs.$chartINRColor,
+                                supportsOpacity: false
+                            )
+                            .onChange(of: prefs.chartINRColor) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
+                        }
+                        HStack {
+                            ColorPicker(
+                                "INR Range Colour",
+                                selection: prefs.$chartINRRangeColor,
+                                supportsOpacity: true
+                            )
+                            .onChange(of: prefs.chartINRRangeColor) {
+                                WidgetCenter.shared.reloadAllTimelines()
+                                print("WIDGETS: Asked to reload.")
+                            }
+                        }
+                    }
                     
                     Section(header: Label("App Icon", systemImage: K.SFSymbols.icon)) {
                         ChangeAppIconView()

@@ -122,6 +122,21 @@ class Prefs: ObservableObject {
     @AppStorage("graphRange", store: UserDefaults(suiteName: "group.minr"))
     public var graphRange: Int = 14
     
+    @AppStorage("chartPointWidth", store: UserDefaults(suiteName: "group.minr"))
+    public var chartPointWidth: Double = 30.0
+    
+    @AppStorage("chartAnticoagulantColor", store: UserDefaults(suiteName: "group.minr"))
+    public var chartAnticoagulantColor: Color = .red
+    
+    @AppStorage("chartSecondaryAnticoagulantColor", store: UserDefaults(suiteName: "group.minr"))
+    public var chartSecondaryAnticoagulantColor: Color = .green
+    
+    @AppStorage("chartINRColor", store: UserDefaults(suiteName: "group.minr"))
+    public var chartINRColor: Color = .blue
+    
+    @AppStorage("chartINRRangeColor", store: UserDefaults(suiteName: "group.minr"))
+    public var chartINRRangeColor: Color = .green.opacity(0.25)
+    
     // Anticoagulant Reminder
     @AppStorage("warfarinReminderEnabled", store: UserDefaults(suiteName: "group.minr"))
     public var warfarinReminderEnabled: Bool = false

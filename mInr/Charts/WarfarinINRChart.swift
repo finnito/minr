@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import CoreData
+import os
 
 struct WarfarinINRChart: View {
     @ObservedObject var dataModel = DataManager.shared
@@ -15,9 +16,17 @@ struct WarfarinINRChart: View {
     
     private var inrMeasurements: [INRMeasurement] = []
     private var antiCoagulantDoses: [AntiCoagulantDose] = []
+    
     private var yAxisMaximum: Double = 0.0
+    private var inrAxisMaximum: Double = 0.0
+    private var anticoagulantAxisMaximum: Int = 0
+    
     private var endDate: Date = Date.now
     private var startDate: Date = Date.now
+    
+    private var maxINRInRange: Double = 0.0
+    private var maxDoseInRange: Int = 0
+    private var maxSecondaryDoseInRange: Int = 0
     
     init () {
         let now = Date.now
@@ -28,15 +37,21 @@ struct WarfarinINRChart: View {
         let maxAntiCoagulantDose = dataModel.highestAntiCoagulantDoseInRange(start: startDate, end: endDate)
         let maxINRMeasurement = dataModel.highestINRInRange(start: startDate, end: endDate)
         
-        if (maxINRMeasurement.count > 0 && maxAntiCoagulantDose.count > 0) {
-            if Double(maxINRMeasurement[0].inr) > Double(maxAntiCoagulantDose[0].dose) {
-                self.yAxisMaximum = Double(maxINRMeasurement[0].inr)
-            } else {
-                self.yAxisMaximum = Double(maxAntiCoagulantDose[0].dose)
-            }
-            self.yAxisMaximum += 1.0
+        if (maxINRMeasurement.count > 0) {
+            self.maxINRInRange = maxINRMeasurement[0].inr
+            self.inrAxisMaximum = (maxINRMeasurement[0].inr + 1.0).rounded(.up)
         } else {
-            self.yAxisMaximum = 5
+            self.inrAxisMaximum = 5
+        }
+        
+        if (maxAntiCoagulantDose.count > 0) {
+            if maxAntiCoagulantDose[0].dose.isMultiple(of: 2) {
+                self.anticoagulantAxisMaximum = Int(maxAntiCoagulantDose[0].dose) + 2
+            } else {
+                self.anticoagulantAxisMaximum = Int(maxAntiCoagulantDose[0].dose) + 3
+            }
+        } else {
+            self.anticoagulantAxisMaximum = 6
         }
     }
     
@@ -49,25 +64,25 @@ struct WarfarinINRChart: View {
                     RectangleMark(
                         xStart: nil,
                         xEnd: nil,
-                        yStart: .value("Maximum", prefs.maximumINR),
-                        yEnd: .value("Minimum", prefs.minimumINR)
+                        yStart: .value("Maximum", prefs.maximumINR / self.inrAxisMaximum),
+                        yEnd: .value("Minimum", prefs.minimumINR / self.inrAxisMaximum)
                     )
-                    .foregroundStyle(K.Colours.INRRange)
+                    .foregroundStyle(prefs.chartINRRangeColor)
                     
                     // Section: INR Measurements
                     ForEach(inrMeasurements) { item in
                         LineMark(
                             x: .value("Date", item.timestamp ?? endDate),
-                            y: .value("INR", item.inr),
+                            y: .value("INR", item.inr / inrAxisMaximum),
                             series: .value("Measurement", "INR")
                         )
-                        .foregroundStyle(.blue)
+                        .foregroundStyle(prefs.chartINRColor)
                         .interpolationMethod(.linear)
                         .symbol(Circle())
                         
                         PointMark(
                             x: .value("Date", item.timestamp ?? endDate),
-                            y: .value("INR", item.inr)
+                            y: .value("INR", item.inr / inrAxisMaximum)
                         )
                         .opacity(0)
                         .annotation(position: .overlay, alignment: .topTrailing, spacing: 10) {
@@ -78,63 +93,73 @@ struct WarfarinINRChart: View {
                     // SECTION: Anticoagulant Doses
                     ForEach(antiCoagulantDoses) { item in
                         LineMark(
-                            x: .value("Date", item.timestamp ?? endDate),
-                            y: .value("\(prefs.primaryAntiCoagulantName)", item.dose),
-                            series: .value("Measurement", "\(prefs.primaryAntiCoagulantName)")
+                            x: .value("Date",
+                                      item.timestamp ?? endDate),
+                            y: .value("\(prefs.primaryAntiCoagulantName)",
+                                      Double(item.dose) / Double(self.anticoagulantAxisMaximum)),
+                            series: .value("Anticoagulant", "\(prefs.primaryAntiCoagulantName)")
                         )
-                        .foregroundStyle(.red)
+                        .foregroundStyle(prefs.chartAnticoagulantColor)
                         .interpolationMethod(.linear)
                         .symbol(Circle())
 
                         PointMark(
-                            x: .value("Date", item.timestamp ?? endDate),
-                            y: .value("\(prefs.primaryAntiCoagulantName)", item.dose)
+                            x: .value(
+                                "Date",
+                                item.timestamp ?? endDate),
+                            y: .value(
+                                "\(prefs.primaryAntiCoagulantName)",
+                                Double(item.dose) / Double(self.anticoagulantAxisMaximum))
                         )
                         .opacity(0)
-                        .annotation(position: .overlay, alignment: .topTrailing, spacing: 10) {
+                        .annotation(position: .overlay, alignment: .bottomLeading, spacing: 10) {
                             Text("\(item.dose)mg").font(.footnote)
                         }
 
-                        if (prefs.secondaryAntiCoagulantEnabled) {
-                            LineMark(
-                                x: .value("Date", item.timestamp ?? endDate),
-                                y: .value("\(prefs.secondaryAntiCoagulantName)", item.secondaryDose),
-                                series: .value("Measurement", "\(prefs.secondaryAntiCoagulantName)")
-                            )
-                            .foregroundStyle(.purple)
-                            .interpolationMethod(.linear)
-                            .symbol(Circle())
-
-                            PointMark(
-                                x: .value("Date", item.timestamp ?? endDate),
-                                y: .value("\(prefs.secondaryAntiCoagulantName)", item.secondaryDose)
-                            )
-                            .opacity(0)
-                            .annotation(position: .overlay, alignment: .topTrailing, spacing: 10) {
-                                Text("\(item.secondaryDose)mg").font(.footnote)
-                            }
-                        }
+//                        if (prefs.secondaryAntiCoagulantEnabled) {
+//                            LineMark(
+//                                x: .value("Date", item.timestamp ?? endDate),
+//                                y: .value("\(prefs.secondaryAntiCoagulantName)", item.secondaryDose / self.maxSecondaryDoseInRange),
+//                                series: .value("Secondary Anticoagulant", "\(prefs.secondaryAntiCoagulantName)")
+//                            )
+//                            .foregroundStyle(.purple)
+//                            .interpolationMethod(.linear)
+//                            .symbol(Circle())
+//
+//                            PointMark(
+//                                x: .value("Date", item.timestamp ?? endDate),
+//                                y: .value("\(prefs.secondaryAntiCoagulantName)", item.secondaryDose / self.maxSecondaryDoseInRange)
+//                            )
+//                            .opacity(0)
+//                            .annotation(position: .overlay, alignment: .topTrailing, spacing: 10) {
+//                                Text("\(item.secondaryDose)mg").font(.footnote)
+//                            }
+//                        }
                     }
                 }
                 .padding(.bottom, 5)
                 .padding(.horizontal, 5)
                 .chartForegroundStyleScale([
-                    "INR": Color.blue,
-                    "\(prefs.primaryAntiCoagulantName)": Color.red,
-                    "INR Range": Color.green
+                    "INR": prefs.chartINRColor,
+                    "\(prefs.primaryAntiCoagulantName)": prefs.chartAnticoagulantColor,
+                    "INR Range": prefs.chartINRRangeColor
                 ])
                 .chartXAxis {
-                    AxisMarks(values: .automatic(desiredCount: prefs.graphRange < 14 ? prefs.graphRange : prefs.graphRange / 4)) { value in
+                    AxisMarks(values: .automatic(desiredCount: prefs.graphRange < 14 ? prefs.graphRange : prefs.graphRange / 2)) { value in
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel()
                     }
                 }
                 .chartYAxis {
-                    AxisMarks(values: [0, self.yAxisMaximum])
+                    let steps = 5.0
+                    let normalisedStride = Array(stride(from: 0, to: 1, by: 1.0/steps))
+                    AxisMarks(position: .leading, values: normalisedStride) { mark in
+                        AxisGridLine()
+                    }
                 }
-                .chartLegend(position: .overlay, alignment: .topLeading, spacing: 10)
-                .frame(width: K.Chart.dataPointWidth * CGFloat(prefs.graphRange), height: K.Chart.chartHeight)
+                .chartLegend(position: .overlay, alignment: .bottomLeading, spacing: 10)
+                .frame(width: prefs.chartPointWidth * CGFloat(prefs.graphRange), height: K.Chart.chartHeight).padding(10)
             }
         }
     }
