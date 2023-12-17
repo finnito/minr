@@ -188,6 +188,46 @@ struct SettingsView: View {
                             Text("Export Data")
                         }
                     }
+                    
+                    Section(header: Label("\(prefs.primaryAntiCoagulantName) Statistics", systemImage: K.SFSymbols.statistics)) {
+                        let firstDose: AntiCoagulantDose? = dataModel.GETFirstDose()
+                        if let dose = firstDose {
+                            if let timestamp = dose.timestamp {
+                                HStack {
+                                    Text("First dose:")
+                                    Spacer()
+                                    Text(timestamp.formatted(date: .numeric, time: .omitted))
+                                }
+                            }
+                        }
+                        
+                        let numberOfDoses = dataModel.GETNumberOfDoses()
+                        HStack {
+                            Text("Number of doses:")
+                            Spacer()
+                            Text("\(numberOfDoses)")
+                        }
+                        
+                        if let dose = firstDose {
+                            if let timestamp = dose.timestamp {
+                                let today = Date().endOfDay
+                                let intervalDays: Double = (today.timeIntervalSince(timestamp) / 86400)
+                                let roundedInterval: Int = Int(intervalDays.rounded(.up))
+                                HStack {
+                                    Text("Missed/omitted doses:")
+                                    Spacer()
+                                    Text("\(roundedInterval - numberOfDoses)")
+                                }
+                            }
+                        }
+                        
+                        let totalAnticoagulantTaken = dataModel.GETTotalAnticoagulantTaken()
+                        HStack {
+                            Text("Total taken:")
+                            Spacer()
+                            Text("\(totalAnticoagulantTaken)mg")
+                        }
+                    }.listRowSeparator(.hidden)
                 }
             }
         }.navigationTitle("Settings")
