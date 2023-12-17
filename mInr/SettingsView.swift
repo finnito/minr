@@ -11,6 +11,8 @@ import WidgetKit
 
 struct SettingsView: View {
     @ObservedObject var prefs = Prefs.shared
+    @ObservedObject var dataModel = DataManager.shared
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         NavigationStack {
