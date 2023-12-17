@@ -33,10 +33,12 @@ struct K {
     
     struct Colours {
         static let INRRange = Color.green.opacity(0.25)
+        static let cardBackgroundDark = Color.white.opacity(0.1)
+        static let cardBackgroundLight = Color.white.opacity(1)
     }
     
     struct Chart {
-        static let dataPointWidth: CGFloat = 25.0
+        static let dataPointWidth: CGFloat = 45.0
         static let chartHeight: CGFloat = 163.0
     }
     
