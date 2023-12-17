@@ -9,6 +9,7 @@ import CoreData
 import SwiftUI
 import Combine
 import WidgetKit
+import os
 
 class DataManager: ObservableObject {
     @Published var inrMeasurements = [INRMeasurement]()
@@ -16,17 +17,71 @@ class DataManager: ObservableObject {
     var changes: [Date] = []
     
     static let shared: DataManager = DataManager()
-    
     let context = PersistenceController.shared.container.viewContext
     
-    init() {
-        print("DataManager being set up.")
+    init(persistenceController: PersistenceController = .shared) {
+        Logger().info("DataManager: init()")
         self.inrMeasurements = self.allINRMeasurements()
         self.antiCoagulantDoses = self.allAntiCoagulantDoses()
     }
     
+    func GETTotalAnticoagulantTaken() -> Int {
+        Logger().info("DataManager: GETTotalAnticoagulantTaken()")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: false)]
+        do {
+            return try context.fetch(request).reduce(0) {
+                $0 + ($1.value(forKey: "dose") as? Int ?? 0)
+            }
+        } catch let error {
+            Logger().info("DataManager: Unable to GETTotalAnticoagulantTaken().\n\(error.localizedDescription)")
+            return 0
+        }
+    }
+    
+    func GETNumberOfDoses() -> Int {
+        Logger().info("DataManager: GETNumberOfDoses()")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: false)]
+        do {
+            return try context.count(for: request)
+        } catch let error {
+            Logger().info("DataManager: Unable to GETFirstDose().\n\(error.localizedDescription)")
+            return 0
+        }
+    }
+    
+    func GETFirstDose() -> AntiCoagulantDose? {
+        Logger().info("DataManager: getFirstDose()")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: true)]
+        request.fetchLimit = 1
+        do {
+            return try context.fetch(request)[0]
+        } catch let error {
+            Logger().info("DataManager: Unable to GETFirstDose().\n\(error.localizedDescription)")
+            return nil
+        }
+    }
+    
+    func getAnticoagulantDoseBy(start: Date, end: Date) -> [AntiCoagulantDose] {
+        Logger().info("DataManager: getAnticoagulantDoseBy(\(start.formatted(date: .numeric, time: .omitted)))")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: false)]
+        request.predicate = NSPredicate(
+            format: "(timestamp >= %@) AND (timestamp <= %@)",
+            argumentArray: [start, end]
+        )
+        do {
+            return try context.fetch(request)
+        } catch let error {
+            Logger().info("DataManager: Unable to getAnticoagulantDoseBy(\(start), \(end)).\n\(error.localizedDescription)")
+            return []
+        }
+    }
+    
     func highestINRInRange(start: Date, end: Date) -> [INRMeasurement] {
-        print("GET: Highest INR measurement in given range.")
+        Logger().info("DataManager: highestINRInRange(\(start), \(end))")
         let request: NSFetchRequest<INRMeasurement> = INRMeasurement.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \INRMeasurement.inr, ascending: false)]
         request.predicate = NSPredicate(
@@ -42,7 +97,7 @@ class DataManager: ObservableObject {
     }
     
     func highestAntiCoagulantDoseInRange(start: Date, end: Date) -> [AntiCoagulantDose] {
-        print("GET: Highest anticoagulant dose in given range.")
+        Logger().info("DataManager: highestAntiCoagulantDoseInRange(\(start), \(end))")
         let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.dose, ascending: false)]
         request.predicate = NSPredicate(
@@ -57,8 +112,24 @@ class DataManager: ObservableObject {
         }
     }
     
+    func highestSecondaryAntiCoagulantDoseInRange(start: Date, end: Date) -> [AntiCoagulantDose] {
+        Logger().info("DataManager: highestSecondaryAntiCoagulantDoseInRange(\(start), \(end))")
+        let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.secondaryDose, ascending: false)]
+        request.predicate = NSPredicate(
+            format: "(timestamp >= %@) AND (timestamp <= %@)",
+            argumentArray: [start, end]
+        )
+        do {
+            return try context.fetch(request)
+        } catch let error {
+            print("ERROR: Couldn't fetch highest secondary anticoagulant dose in given range.\n\(error.localizedDescription)")
+            return []
+        }
+    }
+    
     func allAntiCoagulantDoses() -> [AntiCoagulantDose] {
-        print("GET: All anticoagulant doses.")
+        Logger().info("DataManager: allAntiCoagulantDoses()")
         let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(
             keyPath: \AntiCoagulantDose.timestamp,
@@ -73,7 +144,7 @@ class DataManager: ObservableObject {
     }
     
     func allINRMeasurements() -> [INRMeasurement] {
-        print("GET: All INR measurements.")
+        Logger().info("DataManager: GET allINRMeasurements()")
         let request: NSFetchRequest<INRMeasurement> = INRMeasurement.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(
             keyPath: \INRMeasurement.timestamp,
@@ -88,7 +159,7 @@ class DataManager: ObservableObject {
     }
         
     func addINRMeasurement(inr: Double, timestamp: Date) throws -> INRMeasurement {
-        print("INSERT: INR measurement for \(timestamp).")
+        Logger().info("DataManager: INSERT addINRMeasurement(\(inr), \(timestamp))")
         let newINRMeasurement = INRMeasurement(context: context)
         newINRMeasurement.inr = inr
         newINRMeasurement.timestamp = timestamp
@@ -103,7 +174,7 @@ class DataManager: ObservableObject {
     }
 
     func addAntiCoagulantDose(dose: Int32, secondaryDose: Int32, note: String, timestamp: Date) throws -> AntiCoagulantDose {
-        print("INSERT: anticoagulant dose for \(timestamp).")
+        Logger().info("DataManager: INSERT addAntiCoagulantDose(\(dose), \(secondaryDose), \(note), \(timestamp))")
         let newAntiCoagulantDose = AntiCoagulantDose(context: context)
         newAntiCoagulantDose.dose = dose
         newAntiCoagulantDose.secondaryDose = secondaryDose
@@ -120,7 +191,7 @@ class DataManager: ObservableObject {
     }
     
     func mostRecentINRMeasurement() -> [INRMeasurement] {
-        print("GET: Most recent INR measurement.")
+        Logger().info("DataManager: GET mostRecentINRMeasurement()")
         let request: NSFetchRequest<INRMeasurement> = INRMeasurement.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \INRMeasurement.timestamp,ascending: false)]
         request.fetchLimit = 1
@@ -134,7 +205,7 @@ class DataManager: ObservableObject {
     }
     
     func mostRecentAnticoagulantDose() -> [AntiCoagulantDose] {
-        print("GET: Most recent anticoagulant dose.")
+        Logger().info("DataManager: GET mostRecentAnticoagulantDose()")
         let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.timestamp,ascending: false)]
         request.fetchLimit = 1
@@ -148,7 +219,7 @@ class DataManager: ObservableObject {
     }
 
     func getINRMeasurementsBetween(start: Date, end: Date) -> [INRMeasurement] {
-        print("GET: INR measurements between \(String(describing: start)) and \(String(describing: end)).")
+        Logger().info("DataManager: GET getINRMeasurementsBetween(\(start), \(end)")
         let request: NSFetchRequest<INRMeasurement> = INRMeasurement.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \INRMeasurement.timestamp,ascending: false)]
         request.predicate = NSPredicate(
@@ -164,7 +235,7 @@ class DataManager: ObservableObject {
     }
 
     func getAntiCoagulantDosesBetween(start: Date, end: Date) -> [AntiCoagulantDose] {
-        print("GET: anticoagulant doses between \(String(describing: start)) and \(String(describing: end)).")
+        Logger().info("DataManager: GET getAntiCoagulantDosesBetween(\(start), \(end)")
         let request: NSFetchRequest<AntiCoagulantDose> = AntiCoagulantDose.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \AntiCoagulantDose.timestamp,ascending: false)]
         request.predicate = NSPredicate(
@@ -180,11 +251,12 @@ class DataManager: ObservableObject {
     }
 
     func deleteWarfarinItems(offsets: IndexSet) {
+        Logger().info("DataManager: DELETE deleteWarfarinItems(\(offsets))")
         withAnimation {
             offsets.map() {
                 if let item = self.antiCoagulantDoses[$0].timestamp {
                     changes.append(item)
-                    print("DELETE: anticoagulant dose for \(item)")
+                    Logger().info("DataManager: DELETE \(item)")
                 }
                 return self.antiCoagulantDoses[$0]
 
@@ -201,11 +273,12 @@ class DataManager: ObservableObject {
     }
 
     func deleteINRItems(offsets: IndexSet) {
+        Logger().info("DataManager: DELETE deleteINRItems(\(offsets))")
         withAnimation {
             offsets.map() {
                 if let item = self.inrMeasurements[$0].timestamp {
                     changes.append(item)
-                    print("DELETE: INR measurement for \(item)")
+                    Logger().info("DataManager: DELETE \(item)")
                 }
                 return self.inrMeasurements[$0]
             }.forEach(context.delete)
@@ -221,7 +294,7 @@ class DataManager: ObservableObject {
     }
 
     func updateAnticoagulantEntry(item: FetchedResults<AntiCoagulantDose>.Element) {
-        print("UPDATE: anticoagulant dose for \(String(describing: item.timestamp))")
+        Logger().info("DataManager: UPDATE updateAnticoagulantEntry(\(item))")
         do {
             try saveContext()
             if let timestamp = item.timestamp {
@@ -236,7 +309,7 @@ class DataManager: ObservableObject {
     }
 
     func updateINREntry(item: FetchedResults<INRMeasurement>.Element) {
-        print("UPDATE: INR measurement for \(String(describing: item.timestamp))")
+        Logger().info("DataManager: UPDATE updateINREntry(\(item))")
         do {
             try saveContext()
             if let timestamp = item.timestamp {
@@ -254,11 +327,11 @@ class DataManager: ObservableObject {
         do {
             if context.hasChanges {
                 try context.save()
-                print("Saved changes.")
+                Logger().info("DataManager: save context")
                 self.antiCoagulantDoses = self.allAntiCoagulantDoses()
                 self.inrMeasurements = self.allINRMeasurements()
                 WidgetCenter.shared.reloadAllTimelines()
-                print("Asked widgets to update.")
+                Logger().info("Widgets: Asked to update after saving context.")
             }
         } catch let error {
             print("ERROR: Couldn't save CoreData context: \(error.localizedDescription)")
@@ -266,30 +339,30 @@ class DataManager: ObservableObject {
     }
     
     private var cancellableSet: Set<AnyCancellable> = []
-    init(inMemory: Bool = false) {
-        print("Setting up Core Data update subscriptions  ")
-        CoreDataPublisher(request: INRMeasurement.fetchAllMeasurementsRequest(), context: context)
-            .sink(
-                receiveCompletion: {
-                    print("Completion from fetchAllINRMeasurements")
-                    print($0)
-                },
-                receiveValue: { [weak self] items in
-                    print("Updating inr measurements")
-                    self?.inrMeasurements = items
-                })
-            .store(in: &cancellableSet)
-
-        CoreDataPublisher(request: AntiCoagulantDose.fetchAllDosesRequest(), context: context)
-            .sink(
-                receiveCompletion: {
-                    print("Completion from fetchAllAnticoagulantDoses")
-                    print($0)
-                },
-                receiveValue: { [weak self] items in
-                    print("Updating anticoagulant doses")
-                    self?.antiCoagulantDoses = items
-                })
-            .store(in: &cancellableSet)
-    }
+//    init(inMemory: Bool = false) {
+//        print("Setting up Core Data update subscriptions  ")
+//        CoreDataPublisher(request: INRMeasurement.fetchAllMeasurementsRequest(), context: context)
+//            .sink(
+//                receiveCompletion: {
+//                    print("Completion from fetchAllINRMeasurements")
+//                    print($0)
+//                },
+//                receiveValue: { [weak self] items in
+//                    print("Updating inr measurements")
+//                    self?.inrMeasurements = items
+//                })
+//            .store(in: &cancellableSet)
+//
+//        CoreDataPublisher(request: AntiCoagulantDose.fetchAllDosesRequest(), context: context)
+//            .sink(
+//                receiveCompletion: {
+//                    print("Completion from fetchAllAnticoagulantDoses")
+//                    print($0)
+//                },
+//                receiveValue: { [weak self] items in
+//                    print("Updating anticoagulant doses")
+//                    self?.antiCoagulantDoses = items
+//                })
+//            .store(in: &cancellableSet)
+//    }
 }
