@@ -32,21 +32,18 @@ struct ContentView: View {
                             } label: {
                                 Text("\(Image(systemName: K.SFSymbols.inr)) Add INR").largeGradientButtonText()
                             }
-                            .largeGradientButton(
-                                colour1: Color(red: 237/255, green: 33/255, blue: 58/255),
-                                colour2: Color(red: 147/255, green: 41/255, blue: 30/255))
-                            .sheet(isPresented: $showAddAnticoagulantSheet) {
-                                AddWarfarinView()
+                            .largeDynamicGradientButton(colour: prefs.chartINRColor)
                                     .padding(15)
                                     .presentationDetents([.fraction(K.addDataSheetFraction)])
                                     .presentationDragIndicator(.visible)
                             }
-                            
-                            NavigationLink(destination: AllWarfarinDataView()) {
-                                Text("All \(prefs.primaryAntiCoagulantName) Data")
+                            NavigationLink(destination: AllINRDataView()) {
+                                Text("All INR Data")
+                                    .frame(maxWidth: .infinity)
                             }
                             .font(.footnote)
                             .buttonStyle(.bordered)
+                            .tint(prefs.chartINRColor)
                         }
                         
                         
@@ -58,20 +55,21 @@ struct ContentView: View {
                             } label: {
                                 Text("\(Image(systemName: K.SFSymbols.anticoagulant)) Add Dose").largeGradientButtonText()
                             }
-                            .largeGradientButton(
-                                colour1: Color(red: 0/255, green: 180/255, blue: 219/255),
-                                colour2: Color(red: 0/255, green: 131/255, blue: 176/255))
                             .sheet(isPresented: $showAddINRSheet) {
                                 AddINRView()
+                            .largeDynamicGradientButton(colour: prefs.chartAnticoagulantColor)
                                     .padding(15)
                                     .presentationDetents([.fraction(K.addDataSheetFraction)])
                                     .presentationDragIndicator(.visible)
                             }
-                            NavigationLink(destination: AllINRDataView()) {
-                                Text("All INR Data")
+                            
+                            NavigationLink(destination: AllWarfarinDataView()) {
+                                Text("All \(prefs.primaryAntiCoagulantName) Data")
+                                    .frame(maxWidth: .infinity)
                             }
                             .font(.footnote)
                             .buttonStyle(.bordered)
+                            .tint(prefs.chartAnticoagulantColor)
                         }
                     }
                     .padding(.horizontal, 20)
