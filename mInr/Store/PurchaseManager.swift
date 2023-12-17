@@ -48,7 +48,7 @@ class PurchaseManager: ObservableObject {
             // Successful purchase
             await transaction.finish()
             await self.updatePurchasedProducts()
-        case let .success(.unverified(_, error)):
+        case .success(.unverified(_, _)):
             // Successful purchase but transaction/receipt can't be verified
             // Could be a jailbroken phone
             break
@@ -80,7 +80,7 @@ class PurchaseManager: ObservableObject {
 
     private func observeTransactionUpdates() -> Task<Void, Never> {
         Task(priority: .background) {
-            for await verificationResult in Transaction.updates {
+            for await _ in Transaction.updates {
                 // Using verificationResult directly would be better
                 // but this way works for this tutorial
                 await self.updatePurchasedProducts()

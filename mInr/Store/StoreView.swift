@@ -14,7 +14,7 @@ struct StoreView: View {
     
     var body: some View {
         VStack {
-            Text("This app is free but please consider supporting the work I put into it buy purchasing one of the following. They can be purchased multiple times.")
+            Text("This app is free but please consider supporting the work I put into it buy purchasing one of the following. Each tip can be purchased multiple times.")
                 .padding(10)
             HStack(spacing: 40) {
                 ForEach(purchaseManager.products) { product in
@@ -40,5 +40,12 @@ struct StoreView: View {
                 print(error)
             }
         }
+    }
+}
+
+struct StoreView_Previews: PreviewProvider {
+    static var previews: some View {
+        StoreView()
+            .environmentObject(PurchaseManager())
     }
 }
