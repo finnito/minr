@@ -274,3 +274,34 @@ struct ChartWidgetTimelineProvider: IntentTimelineProvider {
         completion(timeline)
     }
 }
+
+struct ChartWidgetView_Previews: PreviewProvider {
+    static var previews: some View {
+        let now = Date.now
+        let startDate = Calendar.current.date(byAdding: .day, value: 14, to: now) ?? Date.now
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: now) ?? Date.now
+        let inrMeasurements = DataManager.shared.getINRMeasurementsBetween(start: startDate, end: endDate)
+        let antiCoagulantDoses = DataManager.shared.getAntiCoagulantDosesBetween(start: startDate, end: endDate)
+        
+        var legend: KeyValuePairs<String,Color> = [
+            "INR": Prefs.shared.chartINRColor,
+            "\(Prefs.shared.primaryAntiCoagulantName)": Prefs.shared.chartAnticoagulantColor,
+            "INR Range": Prefs.shared.chartINRRangeColor
+        ]
+        
+        let entry = ChartWidgetEntry(
+            date: Date(),
+            providerInfo: "timeline",
+            prefs: Prefs.shared,
+            chartRange: 14,
+            inrMeasurements: inrMeasurements,
+            anticoagulantDoses: antiCoagulantDoses,
+            showINRLabels: true,
+            showAnticoagulantLabels: true,
+            legend: legend
+        )
+        
+        ChartWidgetView(entry: entry)
+            .previewContext(WidgetPreviewContext(family: .systemMedium))
+    }
+}

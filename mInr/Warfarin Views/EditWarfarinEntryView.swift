@@ -69,3 +69,9 @@ struct EditWarfarinEntryView: View {
         }
     }
 }
+
+struct EditWarfarinEntryView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditWarfarinEntryView(entry: DataManager.shared.mostRecentAnticoagulantDose()[0])
+    }
+}

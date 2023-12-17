@@ -43,3 +43,9 @@ struct EditINREntryView: View {
         }
     }
 }
+
+struct EditINREntryView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditINREntryView(entry: DataManager.shared.mostRecentINRMeasurement()[0])
+    }
+}

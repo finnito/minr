@@ -82,3 +82,12 @@ struct CalendarView: UIViewRepresentable {
         }
     }
 }
+
+struct CalendarView_Previews: PreviewProvider {
+    static var previews: some View {
+        CalendarView(interval: DateInterval(
+            start: .distantPast,
+            end: Date()
+        ))
+    }
+}

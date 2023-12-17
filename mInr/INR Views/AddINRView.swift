@@ -68,6 +68,8 @@ struct AddINRView: View {
 
 struct AddINRView_Previews: PreviewProvider {
     static var previews: some View {
-        AddINRView()
+        NavigationStack {
+            AddINRView()
+        }
     }
 }

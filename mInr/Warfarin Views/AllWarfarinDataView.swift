@@ -44,7 +44,7 @@ struct AllWarfarinDataView: View {
     }
 }
 
-struct AllDataView_Previews: PreviewProvider {
+struct AllWarfarinDataView_Previews: PreviewProvider {
     static var previews: some View {
         AllWarfarinDataView()
     }
