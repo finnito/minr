@@ -29,9 +29,12 @@ struct WidgetStatusAccessory: Widget {
 }
 
 struct StatusAccessoryWidgetView: View {
-    let entry: StatusWidgetEntry
+    let entry: StatusAccessoryWidgetEntry
+    
+    @Environment(\.widgetFamily) var family
+    
+    @ViewBuilder
     var body: some View {
-//        HStack {
         VStack(alignment: .leading) {
             // Warfarin Stack
             HStack() {
@@ -43,16 +46,25 @@ struct StatusAccessoryWidgetView: View {
                     Text("\(entry.anticoagulantDose[0].dose)mg")
                 }
                 
-                if entry.acdPlaceholder {
-                    Text("NA days ago")
-                        .italic()
-                } else if entry.daysSinceWarfarin == 1 {
-                    Text("\(entry.daysSinceWarfarin) day ago")
-                        .italic()
-                } else {
-                    Text("\(entry.daysSinceWarfarin) days ago")
-                        .italic()
+//                Spacer()
+                
+                HStack {
+                    if entry.acdPlaceholder {
+                        Text("NA days ago")
+                            .italic()
+                    } else {
+                        switch entry.daysSinceWarfarin {
+                        case 0:
+                            Text("today")
+                        case 1:
+                            Text("\(entry.daysSinceWarfarin) day ago")
+                        default:
+                            Text("\(entry.daysSinceWarfarin) days ago")
+                        }
+                    }
                 }
+                .font(.caption2)
+                .italic()
             }
             
             // INR Stack
@@ -65,19 +77,28 @@ struct StatusAccessoryWidgetView: View {
                     Text("\(entry.inrMeasurement[0].inr, specifier: "%.1f")")
                 }
                 
-                if entry.inrPlaceholder {
-                    Text("NA days ago")
-                        .italic()
-                } else if entry.daysSinceINR == 1 {
-                    Text("\(entry.daysSinceINR) day ago")
-                        .italic()
-                } else {
-                    Text("\(entry.daysSinceINR) days ago")
-                        .italic()
+//                Spacer()
+                
+                HStack {
+                    if entry.inrPlaceholder {
+                        Text("NA days ago")
+                            .italic()
+                    } else {
+                        switch entry.daysSinceINR {
+                        case 0:
+                            Text("today")
+                        case 1:
+                            Text("\(entry.daysSinceINR) day ago")
+                        default:
+                            Text("\(entry.daysSinceINR) days ago")
+                        }
+                    }
                 }
+                .font(.caption2)
+                .italic()
             }
+            Spacer()
         }
-//        }
         .containerBackground(.clear, for: .widget)
     }
 }
@@ -95,8 +116,8 @@ struct StatusAccessoryWidgetEntry: TimelineEntry {
 }
 
 struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
-    typealias Entry = StatusWidgetEntry
-    let model = DataManager.shared
+    typealias Entry = StatusAccessoryWidgetEntry
+    @ObservedObject var dataModel = DataManager.shared
     @ObservedObject var prefs = Prefs.shared
     
     init() {
@@ -104,17 +125,32 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
     }
     
     func placeholder(in context: Context) -> Entry {
-        return StatusWidgetEntry(
         Logger().info("Widget_Status-accessory: placeholder()")
+        let latestINREntry = dataModel.mostRecentINRMeasurement()
+        let latestACDEntry = dataModel.mostRecentAnticoagulantDose()
+        
+        var daysSinceINR: Int
+        if latestINREntry.count != 1 {
+            daysSinceINR = 7
+        }
+        daysSinceINR = Calendar.current.numberOfDaysBetween(latestINREntry[0].timestamp ?? Date(), and: Date())
+        
+        var daysSinceACD: Int
+        if latestACDEntry.count != 1 {
+            daysSinceACD = 7
+        }
+        daysSinceACD = Calendar.current.numberOfDaysBetween(latestACDEntry[0].timestamp ?? Date(), and: Date())
+        
+        return StatusAccessoryWidgetEntry(
             date: Date(),
             providerInfo: "placeholder",
-            inrMeasurement: [INRMeasurement](),
-            anticoagulantDose: [AntiCoagulantDose](),
+            inrMeasurement: latestINREntry,
+            anticoagulantDose: latestACDEntry,
             primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
-            inrPlaceholder: true,
-            acdPlaceholder: true,
-            daysSinceINR: 0,
-            daysSinceWarfarin: 0
+            inrPlaceholder: false,
+            acdPlaceholder: false,
+            daysSinceINR: daysSinceINR,
+            daysSinceWarfarin: daysSinceACD
         )
     }
 
@@ -122,27 +158,33 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Entry) -> ()
     ) {
-        var entry: StatusWidgetEntry
-        var inrPlaceholder = false
-        var acdPlaceholder = false
-        let latestINR = model.mostRecentINRMeasurement()
-        let latestACD = model.mostRecentAnticoagulantDose()
         Logger().info("Widget_Status-accessory: getSnapshot()")
         
-        if latestINR.count == 0 { inrPlaceholder = true }
+        let latestINREntry = dataModel.mostRecentINRMeasurement()
+        let latestACDEntry = dataModel.mostRecentAnticoagulantDose()
         
-        if latestACD.count == 0 { acdPlaceholder = true }
+        var daysSinceINR: Int
+        if latestINREntry.count != 1 {
+            daysSinceINR = 7
+        }
+        daysSinceINR = Calendar.current.numberOfDaysBetween(latestINREntry[0].timestamp ?? Date(), and: Date())
         
-        entry = StatusWidgetEntry(
+        var daysSinceACD: Int
+        if latestACDEntry.count != 1 {
+            daysSinceACD = 7
+        }
+        daysSinceACD = Calendar.current.numberOfDaysBetween(latestACDEntry[0].timestamp ?? Date(), and: Date())
+        
+        let entry = StatusAccessoryWidgetEntry(
             date: Date(),
             providerInfo: "snapshot",
-            inrMeasurement: model.mostRecentINRMeasurement(),
-            anticoagulantDose: model.mostRecentAnticoagulantDose(),
+            inrMeasurement: latestINREntry,
+            anticoagulantDose: latestACDEntry,
             primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
-            inrPlaceholder: inrPlaceholder,
-            acdPlaceholder: acdPlaceholder,
-            daysSinceINR: 0,
-            daysSinceWarfarin: 0
+            inrPlaceholder: false,
+            acdPlaceholder: false,
+            daysSinceINR: daysSinceINR,
+            daysSinceWarfarin: daysSinceACD
         )
         
         completion(entry)
@@ -152,12 +194,12 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        var entry: StatusWidgetEntry
         Logger().info("Widget_Status-accessory: getTimeline()")
+        var entry: StatusAccessoryWidgetEntry
         var inrPlaceholder = false
         var acdPlaceholder = false
-        let latestINR = model.mostRecentINRMeasurement()
-        let latestACD = model.mostRecentAnticoagulantDose()
+        let latestINR = dataModel.mostRecentINRMeasurement()
+        let latestACD = dataModel.mostRecentAnticoagulantDose()
         var daysSinceINR = 0
         var daysSinceACD = 0
         
@@ -167,11 +209,11 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
         if !inrPlaceholder { daysSinceINR = Calendar.current.numberOfDaysBetween(latestINR[0].timestamp ?? Date(), and: Date()) }
         if !acdPlaceholder { daysSinceACD = Calendar.current.numberOfDaysBetween(latestACD[0].timestamp ?? Date(), and: Date()) }
         
-        entry = StatusWidgetEntry(
+        entry = StatusAccessoryWidgetEntry(
             date: Date(),
             providerInfo: "timeline",
-            inrMeasurement: model.mostRecentINRMeasurement(),
-            anticoagulantDose: model.mostRecentAnticoagulantDose(),
+            inrMeasurement: dataModel.mostRecentINRMeasurement(),
+            anticoagulantDose: dataModel.mostRecentAnticoagulantDose(),
             primaryAntiCoagulantName: prefs.primaryAntiCoagulantName,
             inrPlaceholder: inrPlaceholder,
             acdPlaceholder: acdPlaceholder,
