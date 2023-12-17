@@ -9,6 +9,8 @@ import SwiftUI
 import TipKit
 
 struct ContentView: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     @ObservedObject var dataModel = DataManager.shared
     @ObservedObject var prefs = Prefs.shared
     
