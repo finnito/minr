@@ -79,11 +79,14 @@ struct ContentView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    
+                    
                     // Section
                     // Warfarin Chart
                     Text("\(Image(systemName: K.SFSymbols.graph)) Last \(prefs.graphRange) Days").customHeaderStyle()
                     WarfarinINRChart()
                         .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
+
                     // Section
                     // Medication Adherence Chart
                     Text("\(Image(systemName: K.SFSymbols.anticoagulant)) Medication Aherence").customHeaderStyle()
