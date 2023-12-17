@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 struct K {
-    static let addDataSheetFraction: Double = 0.4
     static let helpURL = "https://finn.lesueur.nz/minr/minr-help.html"
+    static let addDataSheetFraction: Double = 0.6
     
     struct SFSymbols {
         static let add = "plus.circle"
