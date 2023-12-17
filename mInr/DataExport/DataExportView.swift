@@ -76,7 +76,11 @@ struct DataExportView: View {
 //                    }
                     
                 } label: {
-                    Text("Export Data")
+                    HStack {
+                        Spacer()
+                        Text("Export Data")
+                        Image(systemName: K.SFSymbols.export)
+                    }
                 }.sheet(isPresented: $showSheet) {
                     ActivityView(items: $items, showing: $showSheet)
                 }

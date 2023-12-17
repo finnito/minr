@@ -17,8 +17,18 @@ struct K {
         static let save = "checkmark.diamond.fill"
         static let inr = "testtube.2"
         static let anticoagulant = "pills.fill"
+        static let graph = "chart.xyaxis.line"
+        static let alarm = "alarm"
+        static let color = "eyedropper.halffull"
         static let icon = "laptopcomputer.and.iphone"
+        static let export = "square.and.arrow.down"
         static let note = "note.text"
+        static let info = ""
+        static let help = "questionmark.circle"
+        static let settings = "gear"
+        static let tip = "lightbulb"
+        static let money = "dollarsign.circle.fill"
+        static let statistics = "tablecells"
     }
     
     struct Colours {

@@ -16,7 +16,7 @@ struct SettingsView: View {
         NavigationStack {
             VStack {
                 Form {
-                    Section(header: Text("Primary Anticoagulant")) {
+                    Section(header: Label("Primary Anticoagulant", systemImage: K.SFSymbols.anticoagulant)) {
                         HStack {
                             Text("Medication Name: ")
                             TextField(
@@ -26,7 +26,7 @@ struct SettingsView: View {
                         }
                     }
                     
-                    Section(header: Text("Secondary Anticoagulant")) {
+                    Section(header: Label("Secondary Medication", systemImage: K.SFSymbols.anticoagulant)) {
                         Toggle("Enabled", isOn: prefs.$secondaryAntiCoagulantEnabled)
                         HStack {
                             Text("Medication Name: ")
@@ -37,7 +37,7 @@ struct SettingsView: View {
                         }.disabled(!prefs.secondaryAntiCoagulantEnabled)
                     }
                     
-                    Section(header: Text("INR Range")) {
+                    Section(header: Label("INR Range", systemImage: K.SFSymbols.inr)) {
                         HStack {
                             Text("Min:")
                             TextField(
@@ -94,7 +94,7 @@ struct SettingsView: View {
                         }.disabled(!prefs.warfarinReminderEnabled)
                     }
                     
-                    Section(header: Text("Accent Colour")) {
+                    Section(header: Label("App Accent Colour", systemImage: K.SFSymbols.color)) {
                         ColorPicker(
                             "Light Accent Colour",
                             selection: prefs.$lightAccentColour,
@@ -112,6 +112,8 @@ struct SettingsView: View {
                     Section(header: Label("App Icon", systemImage: K.SFSymbols.icon)) {
                         ChangeAppIconView()
                     }
+                    
+                    Section(header: Label("Export Data", systemImage: K.SFSymbols.export)) {
                         NavigationLink(destination: DataExportView()) {
                             Text("Export Data")
                         }

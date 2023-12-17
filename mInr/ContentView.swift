@@ -30,7 +30,7 @@ struct ContentView: View {
                             Button {
                                 showAddAnticoagulantSheet = true
                             } label: {
-                                Text("Add \(prefs.primaryAntiCoagulantName)").largeGradientButtonText()
+                                Text("\(Image(systemName: K.SFSymbols.inr)) Add INR").largeGradientButtonText()
                             }
                             .largeGradientButton(
                                 colour1: Color(red: 237/255, green: 33/255, blue: 58/255),
@@ -56,7 +56,7 @@ struct ContentView: View {
                             Button {
                                 showAddINRSheet = true
                             } label: {
-                                Text("Add INR").largeGradientButtonText()
+                                Text("\(Image(systemName: K.SFSymbols.anticoagulant)) Add Dose").largeGradientButtonText()
                             }
                             .largeGradientButton(
                                 colour1: Color(red: 0/255, green: 180/255, blue: 219/255),
@@ -78,7 +78,7 @@ struct ContentView: View {
                     
                     // Section
                     // Warfarin Chart
-                    Text("Last \(prefs.graphRange) Days").customHeaderStyle()
+                    Text("\(Image(systemName: K.SFSymbols.graph)) Last \(prefs.graphRange) Days").customHeaderStyle()
                     WarfarinINRChart()
                         .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                     // Section
@@ -92,8 +92,7 @@ struct ContentView: View {
                     
                     // Section
                     // In-App Purchases
-                    Text("Support The App").customHeaderStyle()
-                    StoreView().card()
+                    Text("\(Image(systemName: K.SFSymbols.money)) Support The App").customHeaderStyle()
                     StoreView()
                         .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                         .fullScreenCover(isPresented: $prefs.showFirstRunView) {
