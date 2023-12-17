@@ -12,6 +12,7 @@ import TipKit
 
 @main
 struct mInrApp: App {
+    @StateObject private var dataModel = DataManager.shared
     @StateObject private var purchaseManager = PurchaseManager()
     @StateObject var prefs: Prefs = Prefs()
     
@@ -42,14 +43,12 @@ struct mInrApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-//                .environment(\.prefs, prefs)
-                .environmentObject(prefs)
-                .environmentObject(dataModel)
-                .environmentObject(purchaseManager)
-                .tint(getCurrentSystemColorScheme() == .dark ? prefs.darkAccentColour : prefs.lightAccentColour)
-                .task {
-                    await purchaseManager.updatePurchasedProducts()
-                }
+            .environmentObject(prefs)
+            .environmentObject(dataModel)
+            .environmentObject(purchaseManager)
+            .task {
+                await purchaseManager.updatePurchasedProducts()
+            }
             .task {
                 try? Tips.configure([
                     .displayFrequency(.daily),
