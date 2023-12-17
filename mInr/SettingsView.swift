@@ -77,14 +77,20 @@ struct SettingsView: View {
                     }
                     
                     
-                    Section(header: Text("Medication Reminder")) {
-                        Toggle("Enabled", isOn: prefs.$warfarinReminderEnabled.onChange(updateWarfarinReminder))
+                    Section(header: Label("Medication Reminder", systemImage: K.SFSymbols.alarm)) {
+                        Toggle("Enabled", isOn: prefs.$warfarinReminderEnabled)
+                            .onChange(of: prefs.warfarinReminderEnabled) {
+                                NotificationsViewController().updateWarfarinReminder()
+                            }
                         HStack {
                             DatePicker(
                                 "Time",
-                                selection: prefs.$warfarinReminderTime.onChange(updateWarfarinReminder),
+                                selection: prefs.$warfarinReminderTime,
                                 displayedComponents: [.hourAndMinute]
                             )
+                            .onChange(of: prefs.warfarinReminderTime) {
+                                NotificationsViewController().updateWarfarinReminder()
+                            }
                         }.disabled(!prefs.warfarinReminderEnabled)
                     }
                     

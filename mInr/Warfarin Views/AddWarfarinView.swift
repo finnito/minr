@@ -62,6 +62,7 @@ struct AddWarfarinView: View {
                                 timestamp: warfarinDoseDate
                             )
                             presentationMode.wrappedValue.dismiss()
+                            NotificationsViewController().updateWarfarinReminder()
                         } catch let error {
                             print("Couldn't add anticoagulantdose: \(error.localizedDescription)")
                         }

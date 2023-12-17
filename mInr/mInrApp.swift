@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import NotificationCenter
 
 @main
 struct mInrApp: App {
@@ -20,17 +21,25 @@ struct mInrApp: App {
     init(appModel: DataManager) {
         _dataModel = StateObject(wrappedValue: appModel)
     }
+    private var notificationDelegate = NotificationsViewController()
     
     init() {
+        Logger().info("mInrApp: registerForNotification()")
         registerForNotification()
+        
+        Logger().info("mInrApp: set notificationDelegate and registerCategories()")
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+        notificationDelegate.registerCategories()
     }
     
+    // This function manages the requesting
+    // of user permission to show notifications.
     func registerForNotification() {
-        //For device token and push notifications.
-        UIApplication.shared.registerForRemoteNotifications()
         let center : UNUserNotificationCenter = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.sound , .alert , .badge ], completionHandler: { (granted, error) in
-            if ((error != nil)) { UIApplication.shared.registerForRemoteNotifications() }
+            if ((error != nil)) {
+                center.delegate = notificationDelegate
+            }
         })
     }
     
