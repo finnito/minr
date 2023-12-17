@@ -24,8 +24,7 @@ struct AddWarfarinDose: AppIntent {
     var secondaryDose: Int
     
     @Parameter(title: "Optional Note")
-    var note
-    : String
+    var note: String
 
     @Parameter(title: "Date")
     var date: Date?
