@@ -14,5 +14,7 @@
 		<string>ChartRangeConfigurationIntent</string>
 		<string>ConfigurationIntent</string>
 	</array>
+	<key>Primary</key>
+	<string></string>
 </dict>
 </plist>

@@ -9,16 +9,18 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>kazLrd</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>22F66</string>
+	<string>23B92</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>14E300c</string>
+	<string>15C65</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>14.3.1</string>
+	<string>15.1</string>
 	<key>INIntents</key>
 	<array>
 		<dict>
 			<key>INIntentCategory</key>
 			<string>generic</string>
+			<key>INIntentDescription</key>
+			<string>Displays a chart on the home screen with your anticoagulant doses and INR measurements.</string>
 			<key>INIntentDescriptionID</key>
 			<string>VBDwAe</string>
 			<key>INIntentEligibleForWidgets</key>
@@ -175,7 +177,7 @@
 				</array>
 			</dict>
 			<key>INIntentTitle</key>
-			<string>Chart Range Configuration</string>
+			<string>Dose &amp; INR Chart</string>
 			<key>INIntentTitleID</key>
 			<string>Gve4ft</string>
 			<key>INIntentType</key>

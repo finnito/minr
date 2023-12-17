@@ -20,8 +20,9 @@
 		E81D4271299B4DCF00835797 /* AllWarfarinDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81D4270299B4DCF00835797 /* AllWarfarinDataView.swift */; };
 		E81D4273299B7D8C00835797 /* EditWarfarinEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81D4272299B7D8C00835797 /* EditWarfarinEntryView.swift */; };
 		E820D23229B0743F008A2947 /* WarfarinCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E820D23129B0743F008A2947 /* WarfarinCalendarView.swift */; };
+		E84C0B892B1F07FE00C034B0 /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E84C0B882B1F07FE00C034B0 /* AppIcon.swift */; };
 		E84C909629F8C916009DF0E9 /* mInr.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E81D41F629978A8D00835797 /* mInr.xcdatamodeld */; };
-		E84C909729F8D788009DF0E9 /* mINRDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012629D3870B00DCD60A /* mINRDataModel.swift */; };
+		E84C909729F8D788009DF0E9 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012629D3870B00DCD60A /* DataModel.swift */; };
 		E84C909829F8D7F7009DF0E9 /* CoreDataPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012A29D3E23200DCD60A /* CoreDataPublisher.swift */; };
 		E84C909929F8D7FA009DF0E9 /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012C29D3E43100DCD60A /* ModelExtensions.swift */; };
 		E84C909A29F8D7FF009DF0E9 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E81D41F429978A8D00835797 /* Persistence.swift */; };
@@ -40,13 +41,15 @@
 		E85255DB29D2DE480066E884 /* AddWarfarinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85255DA29D2DE480066E884 /* AddWarfarinView.swift */; };
 		E85255DD29D2DED10066E884 /* AddINRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85255DC29D2DED10066E884 /* AddINRView.swift */; };
 		E86067B129D2F0DE00151DCF /* BindingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86067B029D2F0DE00151DCF /* BindingExtensions.swift */; };
-		E866012729D3870B00DCD60A /* mINRDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012629D3870B00DCD60A /* mINRDataModel.swift */; };
+		E866012729D3870B00DCD60A /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012629D3870B00DCD60A /* DataModel.swift */; };
 		E866012B29D3E23200DCD60A /* CoreDataPublisher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012A29D3E23200DCD60A /* CoreDataPublisher.swift */; };
 		E866012D29D3E43100DCD60A /* ModelExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E866012C29D3E43100DCD60A /* ModelExtensions.swift */; };
+		E86FC2B02B2BB41B005B050A /* Tips.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86FC2AF2B2BB41B005B050A /* Tips.swift */; };
 		E8739B3E29A090BD0048E746 /* AllINRDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8739B3D29A090BD0048E746 /* AllINRDataView.swift */; };
 		E8739B4029A091350048E746 /* EditINREntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8739B3F29A091350048E746 /* EditINREntryView.swift */; };
 		E8739B4429A0A5380048E746 /* WarfarinINRChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8739B4329A0A5380048E746 /* WarfarinINRChart.swift */; };
 		E8739B4629A1CC950048E746 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8739B4529A1CC950048E746 /* SettingsView.swift */; };
+		E87A230B2B2AEF70000E63DF /* FirstRunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87A230A2B2AEF70000E63DF /* FirstRunView.swift */; };
 		E89924F42A591C1C0083BFC7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89924F32A591C1C0083BFC7 /* Constants.swift */; };
 		E89924F52A5A35410083BFC7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89924F32A591C1C0083BFC7 /* Constants.swift */; };
 		E89924F62A5A35420083BFC7 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E89924F32A591C1C0083BFC7 /* Constants.swift */; };
@@ -59,9 +62,13 @@
 		E8A4559D29DA9E2000941191 /* Widget_Chart-med.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A4559C29DA9E2000941191 /* Widget_Chart-med.swift */; };
 		E8A455A229DA9E2200941191 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E8A455A129DA9E2200941191 /* Assets.xcassets */; };
 		E8A455A829DA9E2200941191 /* WidgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E8A4559629DA9E2000941191 /* WidgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E8B0C5332B27D82E0038199E /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B0C5322B27D82E0038199E /* WidgetConfiguration.swift */; };
+		E8B0C5352B290D6F0038199E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B0C5342B290D6F0038199E /* Logger.swift */; };
 		E8C4F0FA29D8E7A3000FB9FF /* ShortcutsWarfarinDoseEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4F0F929D8E7A3000FB9FF /* ShortcutsWarfarinDoseEntity.swift */; };
 		E8C4F0FE29D8F8FD000FB9FF /* IntentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4F0FD29D8F8FD000FB9FF /* IntentError.swift */; };
 		E8C4F10029D8F952000FB9FF /* Shortcuts_AddINRMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4F0FF29D8F952000FB9FF /* Shortcuts_AddINRMeasurement.swift */; };
+		E8E2B1682B129C720047B556 /* updateAnticoagulantReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E2B1672B129C720047B556 /* updateAnticoagulantReminder.swift */; };
+		E8E2B1692B129C720047B556 /* updateAnticoagulantReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E2B1672B129C720047B556 /* updateAnticoagulantReminder.swift */; };
 		E8EE91AC2A52A00500300892 /* Widget_Status-accessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EE91AA2A529FCC00300892 /* Widget_Status-accessory.swift */; };
 		E8EE91AF2A53A92B00300892 /* DataExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EE91AE2A53A92B00300892 /* DataExportView.swift */; };
 		E8EE91B12A552CDE00300892 /* ListModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8EE91B02A552CDE00300892 /* ListModifier.swift */; };
@@ -123,6 +130,7 @@
 		E81D4270299B4DCF00835797 /* AllWarfarinDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllWarfarinDataView.swift; sourceTree = "<group>"; };
 		E81D4272299B7D8C00835797 /* EditWarfarinEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWarfarinEntryView.swift; sourceTree = "<group>"; };
 		E820D23129B0743F008A2947 /* WarfarinCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarfarinCalendarView.swift; sourceTree = "<group>"; };
+		E84C0B882B1F07FE00C034B0 /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		E84C909C29FA3F53009DF0E9 /* Extension_URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_URL.swift; sourceTree = "<group>"; };
 		E84C90A429FA64BF009DF0E9 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		E84C90AF29FA64C0009DF0E9 /* IntentsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IntentsUI.framework; path = System/Library/Frameworks/IntentsUI.framework; sourceTree = SDKROOT; };
@@ -139,15 +147,17 @@
 		E85255DA29D2DE480066E884 /* AddWarfarinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWarfarinView.swift; sourceTree = "<group>"; };
 		E85255DC29D2DED10066E884 /* AddINRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddINRView.swift; sourceTree = "<group>"; };
 		E86067B029D2F0DE00151DCF /* BindingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtensions.swift; sourceTree = "<group>"; };
-		E866012629D3870B00DCD60A /* mINRDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mINRDataModel.swift; sourceTree = "<group>"; };
+		E866012629D3870B00DCD60A /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		E866012A29D3E23200DCD60A /* CoreDataPublisher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataPublisher.swift; sourceTree = "<group>"; };
 		E866012C29D3E43100DCD60A /* ModelExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelExtensions.swift; sourceTree = "<group>"; };
+		E86FC2AF2B2BB41B005B050A /* Tips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tips.swift; sourceTree = "<group>"; };
 		E8739B3D29A090BD0048E746 /* AllINRDataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllINRDataView.swift; sourceTree = "<group>"; };
 		E8739B3F29A091350048E746 /* EditINREntryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditINREntryView.swift; sourceTree = "<group>"; };
 		E8739B4329A0A5380048E746 /* WarfarinINRChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarfarinINRChart.swift; sourceTree = "<group>"; };
 		E8739B4529A1CC950048E746 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		E8739B5029A4B7030048E746 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		E8739B5229A4B7030048E746 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		E87A230A2B2AEF70000E63DF /* FirstRunView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstRunView.swift; sourceTree = "<group>"; };
 		E89924F32A591C1C0083BFC7 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E89924F82A5A38970083BFC7 /* Prefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prefs.swift; sourceTree = "<group>"; };
 		E8A4559629DA9E2000941191 /* WidgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WidgetsExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -157,9 +167,12 @@
 		E8A455A329DA9E2200941191 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E8A455A929DA9E2200941191 /* WidgetsExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetsExtension.entitlements; sourceTree = "<group>"; };
 		E8A455AD29DA9FD100941191 /* WidgetsExtensionRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WidgetsExtensionRelease.entitlements; sourceTree = "<group>"; };
+		E8B0C5322B27D82E0038199E /* WidgetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetConfiguration.swift; sourceTree = "<group>"; };
+		E8B0C5342B290D6F0038199E /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		E8C4F0F929D8E7A3000FB9FF /* ShortcutsWarfarinDoseEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutsWarfarinDoseEntity.swift; sourceTree = "<group>"; };
 		E8C4F0FD29D8F8FD000FB9FF /* IntentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentError.swift; sourceTree = "<group>"; };
 		E8C4F0FF29D8F952000FB9FF /* Shortcuts_AddINRMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shortcuts_AddINRMeasurement.swift; sourceTree = "<group>"; };
+		E8E2B1672B129C720047B556 /* updateAnticoagulantReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = updateAnticoagulantReminder.swift; sourceTree = "<group>"; };
 		E8EE91AA2A529FCC00300892 /* Widget_Status-accessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Widget_Status-accessory.swift"; sourceTree = "<group>"; };
 		E8EE91AE2A53A92B00300892 /* DataExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExportView.swift; sourceTree = "<group>"; };
 		E8EE91B02A552CDE00300892 /* ListModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListModifier.swift; sourceTree = "<group>"; };
@@ -258,8 +271,9 @@
 				E81D41FE29978A9000835797 /* Preview Content */,
 				E8739B4529A1CC950048E746 /* SettingsView.swift */,
 				E84C911029FDBE2E009DF0E9 /* SFSafariViewWrapper.swift */,
-				E84C911629FDF070009DF0E9 /* Store */,
+				E84C911629FDF070009DF0E9 /* Store */,
 				E8739B4129A091F30048E746 /* Warfarin Views */,
+				E87A230A2B2AEF70000E63DF /* FirstRunView.swift */,
 			);
 			path = mInr;
 			sourceTree = "<group>";
@@ -289,14 +303,14 @@
 			path = mInrUITests;
 			sourceTree = "<group>";
 		};
-		E84C911629FDF070009DF0E9 /* Store */ = {
+		E84C911629FDF070009DF0E9 /* Store */ = {
 			isa = PBXGroup;
 			children = (
 				E84C911429FDEFAB009DF0E9 /* mINR.storekit */,
 				E84C911729FDF096009DF0E9 /* StoreView.swift */,
 				E84C911D29FE07C4009DF0E9 /* PurchaseManager.swift */,
 			);
-			path = "\bStore";
+			path = Store;
 			sourceTree = "<group>";
 		};
 		E85255D129CED9D70066E884 /* Extensions */ = {
@@ -307,6 +321,7 @@
 				E84C909C29FA3F53009DF0E9 /* Extension_URL.swift */,
 				E84C90CD29FC8E9A009DF0E9 /* CalendarExtension.swift */,
 				E8EE91B02A552CDE00300892 /* ListModifier.swift */,
+				E8B0C5322B27D82E0038199E /* WidgetConfiguration.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -370,9 +385,13 @@
 			isa = PBXGroup;
 			children = (
 				E85255D129CED9D70066E884 /* Extensions */,
-				E866012629D3870B00DCD60A /* mINRDataModel.swift */,
+				E866012629D3870B00DCD60A /* DataModel.swift */,
 				E866012A29D3E23200DCD60A /* CoreDataPublisher.swift */,
 				E866012C29D3E43100DCD60A /* ModelExtensions.swift */,
+				E8E2B1672B129C720047B556 /* updateAnticoagulantReminder.swift */,
+				E84C0B882B1F07FE00C034B0 /* AppIcon.swift */,
+				E8B0C5342B290D6F0038199E /* Logger.swift */,
+				E86FC2AF2B2BB41B005B050A /* Tips.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -570,7 +589,9 @@
 				E820D23229B0743F008A2947 /* WarfarinCalendarView.swift in Sources */,
 				E8C4F10029D8F952000FB9FF /* Shortcuts_AddINRMeasurement.swift in Sources */,
 				E866012D29D3E43100DCD60A /* ModelExtensions.swift in Sources */,
+				E86FC2B02B2BB41B005B050A /* Tips.swift in Sources */,
 				E81D41F329978A8D00835797 /* mInrApp.swift in Sources */,
+				E8B0C5332B27D82E0038199E /* WidgetConfiguration.swift in Sources */,
 				E8739B4029A091350048E746 /* EditINREntryView.swift in Sources */,
 				E84C911129FDBE2E009DF0E9 /* SFSafariViewWrapper.swift in Sources */,
 				E81D41FA29978A8D00835797 /* ContentView.swift in Sources */,
@@ -582,13 +603,17 @@
 				E81D41F529978A8D00835797 /* Persistence.swift in Sources */,
 				E84C909D29FA3F53009DF0E9 /* Extension_URL.swift in Sources */,
 				E8739B3E29A090BD0048E746 /* AllINRDataView.swift in Sources */,
+				E84C0B892B1F07FE00C034B0 /* AppIcon.swift in Sources */,
+				E87A230B2B2AEF70000E63DF /* FirstRunView.swift in Sources */,
+				E8B0C5352B290D6F0038199E /* Logger.swift in Sources */,
 				E8C4F0FE29D8F8FD000FB9FF /* IntentError.swift in Sources */,
 				E81D4273299B7D8C00835797 /* EditWarfarinEntryView.swift in Sources */,
 				E85255DB29D2DE480066E884 /* AddWarfarinView.swift in Sources */,
 				E866012B29D3E23200DCD60A /* CoreDataPublisher.swift in Sources */,
 				E85255D329CED9EA0066E884 /* DateExtensions.swift in Sources */,
 				E84C911829FDF096009DF0E9 /* StoreView.swift in Sources */,
-				E866012729D3870B00DCD60A /* mINRDataModel.swift in Sources */,
+				E8E2B1682B129C720047B556 /* updateAnticoagulantReminder.swift in Sources */,
+				E866012729D3870B00DCD60A /* DataModel.swift in Sources */,
 				E84C911E29FE07C4009DF0E9 /* PurchaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,6 +644,7 @@
 				E84C909A29F8D7FF009DF0E9 /* Persistence.swift in Sources */,
 				E84C90C929FA68AB009DF0E9 /* Chart.intentdefinition in Sources */,
 				E8A4559D29DA9E2000941191 /* Widget_Chart-med.swift in Sources */,
+				E8E2B1692B129C720047B556 /* updateAnticoagulantReminder.swift in Sources */,
 				E84C90CE29FC8E9A009DF0E9 /* CalendarExtension.swift in Sources */,
 				E84C909E29FA3FB8009DF0E9 /* Extension_URL.swift in Sources */,
 				E8A4559B29DA9E2000941191 /* WidgetsBundle.swift in Sources */,
@@ -628,7 +654,7 @@
 				E89924FC2A5A38970083BFC7 /* Prefs.swift in Sources */,
 				E84C909629F8C916009DF0E9 /* mInr.xcdatamodeld in Sources */,
 				E89924F52A5A35410083BFC7 /* Constants.swift in Sources */,
-				E84C909729F8D788009DF0E9 /* mINRDataModel.swift in Sources */,
+				E84C909729F8D788009DF0E9 /* DataModel.swift in Sources */,
 				E84C90CC29FBCCA1009DF0E9 /* Widget_Status-sm.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -658,6 +684,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-purple_blue";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -705,7 +734,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -718,6 +747,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon-purple_blue";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -759,7 +791,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -772,11 +804,13 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIcon-purple_blue";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = mInr/mInr.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"mInr/Preview Content\"";
 				DEVELOPMENT_TEAM = CX944Q5V5A;
@@ -795,19 +829,20 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 2023.2;
+				MARKETING_VERSION = 2023.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "Finn-Le-Sueur.mInr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Debug;
 		};
@@ -816,11 +851,13 @@
 			buildSettings = {
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES = "AppIcon AppIcon-purple_blue";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = mInr/mInrRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"mInr/Preview Content\"";
 				DEVELOPMENT_TEAM = CX944Q5V5A;
@@ -839,19 +876,20 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 2023.2;
+				MARKETING_VERSION = 2023.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "Finn-Le-Sueur.mInr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx watchos watchsimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
+				TVOS_DEPLOYMENT_TARGET = 16.0;
 			};
 			name = Release;
 		};
@@ -956,20 +994,20 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetsExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = CX944Q5V5A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2023.1;
+				MARKETING_VERSION = 2023.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "Finn-Le-Sueur.mInr.Widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -988,20 +1026,20 @@
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = WidgetsExtensionRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = CX944Q5V5A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Widgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Widgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2023.1;
+				MARKETING_VERSION = 2023.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "Finn-Le-Sueur.mInr.Widgets";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

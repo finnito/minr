@@ -27,7 +27,7 @@
 		<key>WidgetsExtension.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>0</integer>
 		</dict>
 		<key>mInr iOS.xcscheme_^#shared#^_</key>
 		<dict>
@@ -37,26 +37,11 @@
 		<key>mInr.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>E81D41EE29978A8D00835797</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E81D420429978A9000835797</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E81D420E29978A9000835797</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>E8A4559529DA9E2000941191</key>
 		<dict>
 			<key>primary</key>
