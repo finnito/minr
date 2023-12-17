@@ -82,8 +82,8 @@ struct ContentView: View {
                     WarfarinINRChart()
                         .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                     // Section
-                    // Medication Compliance Chart
-                    Text("Medication Compliance").customHeaderStyle()
+                    // Medication Adherence Chart
+                    Text("\(Image(systemName: K.SFSymbols.anticoagulant)) Medication Aherence").customHeaderStyle()
                     CalendarView(
                         interval: DateInterval(start: .distantPast, end: Date())
                     )
