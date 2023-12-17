@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CoreData
+import os
 
 struct AddINRView: View {
     @ObservedObject var dataModel = DataManager.shared
@@ -50,7 +51,7 @@ struct AddINRView: View {
                                 _ = try dataModel.addINRMeasurement(inr: prefs.inrMeasurement, timestamp: inrMeasurementDate)
                                 presentationMode.wrappedValue.dismiss()
                             } catch let error {
-                                print("Couldn't add INR measurement: \(error.localizedDescription)")
+                                Logger().fault("AddINRView: Couldn't add INR measurement. \(error.localizedDescription)")
                             }
                         }
                     }, label: {

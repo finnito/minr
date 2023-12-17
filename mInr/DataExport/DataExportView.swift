@@ -7,13 +7,13 @@
 
 import SwiftUI
 import TabularData
+import os
 
 struct ActivityView: UIViewControllerRepresentable {
     @Binding var items: [URL]
     @Binding var showing: Bool
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        print(items)
         let vc = UIActivityViewController(
             activityItems: items,
             applicationActivities: nil
@@ -41,22 +41,18 @@ struct DataExportView: View {
                 Text("Your data is synced using Apple's CloudKit, but, you may export it to do any other processing or backups that you desire.")
                 Text("Simply click the export button below and save the files. It may take a few seconds for the files to be generated.")
                 Button {
-//                    print("START DATA EXPORT")
                     let inrDataFrame = getINRDataFrame()
-//                    print(inrDataFrame)
                     
                     let acdDataFrame = getAntiCoagulantDataFrame()
-//                    print(acdDataFrame)
                     
                     let INRCSVURL = FileManager.default.temporaryDirectory
                         .appendingPathComponent("INR_Data_Export")
                         .appendingPathExtension("csv")
                     do {
                         try inrDataFrame.writeCSV(to: INRCSVURL)
-//                        print("Wrote INR data to \(INRCSVURL)")
                         self.items.append(INRCSVURL)
                     } catch {
-                        print("Count not write INR data to CSV file.")
+                        Logger().fault("Count not write INR data to CSV file.")
                     }
                     
                     let ACDCSVURL = FileManager.default.temporaryDirectory
@@ -64,16 +60,13 @@ struct DataExportView: View {
                         .appendingPathExtension("csv")
                     do {
                         try acdDataFrame.writeCSV(to: ACDCSVURL)
-//                        print("Wrote anticoagulant data to \(ACDCSVURL)")
                         self.items.append(ACDCSVURL)
                     } catch {
-                        print("Count not write anticoagulant data to CSV file.")
+                        Logger().fault("Could not write anticoagulant data to CSV file.")
                     }
                     
-//                    print("Items: \(self.items)")
-//                    print("Toggling on share sheet.")
+                    prefs.lastDataExport = Date()
                     self.showSheet.toggle()
-//                    }
                     
                 } label: {
                     HStack {

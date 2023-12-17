@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 struct AddWarfarinView: View {
     @ObservedObject var dataModel = DataManager.shared
@@ -64,7 +65,7 @@ struct AddWarfarinView: View {
                             presentationMode.wrappedValue.dismiss()
                             NotificationsViewController().updateWarfarinReminder()
                         } catch let error {
-                            print("Couldn't add anticoagulantdose: \(error.localizedDescription)")
+                            Logger().fault("Couldn't add anticoagulantdose: \(error.localizedDescription)")
                         }
                     }
                 }, label: {

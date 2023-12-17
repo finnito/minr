@@ -7,6 +7,7 @@
 
 import SwiftUI
 import NotificationCenter
+import os
 
 @main
 struct mInrApp: App {
@@ -24,6 +25,8 @@ struct mInrApp: App {
     private var notificationDelegate = NotificationsViewController()
     
     init() {
+        Logger().info("mInrApp: init()")
+        
         Logger().info("mInrApp: registerForNotification()")
         registerForNotification()
         

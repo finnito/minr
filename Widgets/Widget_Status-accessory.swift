@@ -10,6 +10,7 @@ import WidgetKit
 import SwiftUI
 import Intents
 import Charts
+import os
 
 struct WidgetStatusAccessory: Widget {
     let kind: String = "com.minr.widget_status_accessory"
@@ -99,11 +100,12 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
     @ObservedObject var prefs = Prefs.shared
     
     init() {
-        print("Initialising StatusWidgetTimelineProvider")
+        Logger().info("Widget_Status-accessory: init()")
     }
     
     func placeholder(in context: Context) -> Entry {
         return StatusWidgetEntry(
+        Logger().info("Widget_Status-accessory: placeholder()")
             date: Date(),
             providerInfo: "placeholder",
             inrMeasurement: [INRMeasurement](),
@@ -120,12 +122,12 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Entry) -> ()
     ) {
-        print("getSnapshot INR Measurements: \(model.inrMeasurements)")
         var entry: StatusWidgetEntry
         var inrPlaceholder = false
         var acdPlaceholder = false
         let latestINR = model.mostRecentINRMeasurement()
         let latestACD = model.mostRecentAnticoagulantDose()
+        Logger().info("Widget_Status-accessory: getSnapshot()")
         
         if latestINR.count == 0 { inrPlaceholder = true }
         
@@ -150,8 +152,8 @@ struct StatusAccessoryWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        print("getSnapshot INR Measurements: \(model.inrMeasurements)")
         var entry: StatusWidgetEntry
+        Logger().info("Widget_Status-accessory: getTimeline()")
         var inrPlaceholder = false
         var acdPlaceholder = false
         let latestINR = model.mostRecentINRMeasurement()

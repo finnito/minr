@@ -59,7 +59,6 @@ struct PersistenceController {
         container.persistentStoreDescriptions = [storeDescription]
         
         if inMemory {
-            print(container.persistentStoreDescriptions)
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }
         

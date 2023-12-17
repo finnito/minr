@@ -10,6 +10,7 @@ import WidgetKit
 import SwiftUI
 import Intents
 import Charts
+import os
 
 struct WidgetStatus: Widget {
     let kind: String = "com.minr.widget_status"
@@ -138,10 +139,11 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
     @ObservedObject var prefs = Prefs.shared
     
     init() {
-        print("Initialising StatusWidgetTimelineProvider")
+        Logger().info("Widget_Status-sm: init()")
     }
     
     func placeholder(in context: Context) -> Entry {
+        Logger().info("Widget_Status-sm: placeholder()")
         return StatusWidgetEntry(
             date: Date(),
             providerInfo: "placeholder",
@@ -159,7 +161,7 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Entry) -> ()
     ) {
-        print("getSnapshot INR Measurements: \(model.inrMeasurements)")
+        Logger().info("Widget_Status-sm: getSnapshot()")
         var entry: StatusWidgetEntry
         var inrPlaceholder = false
         var acdPlaceholder = false
@@ -193,7 +195,7 @@ struct StatusWidgetTimelineProvider: TimelineProvider {
         in context: Context,
         completion: @escaping (Timeline<Entry>) -> ()
     ) {
-        print("getSnapshot INR Measurements: \(model.inrMeasurements)")
+        Logger().info("Widget_Status-sm: getTimeline()")
         var entry: StatusWidgetEntry
         var inrPlaceholder = false
         var acdPlaceholder = false

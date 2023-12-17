@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import os
 
 struct CalendarView: UIViewRepresentable {
     @ObservedObject var dataModel = DataManager.shared
@@ -26,17 +27,16 @@ struct CalendarView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UICalendarView, context: Context) {
-        print("updateUIView called")
+        Logger().info("WarfarinCalendarView: updateUIView()")
         var allComponents = [DateComponents]()
-        print("Changes: \(dataModel.changes)")
+        Logger().info("WarfarinCalendarView: \(dataModel.changes.count) changes detected")
         while dataModel.changes.count > 0 {
             let changedDate = dataModel.changes.removeFirst()
             let components = Calendar.current.dateComponents([.day, .month, .year], from: changedDate)
-            print("    Components: \(components)")
             allComponents.append(components)
         }
-        print("All components: \(allComponents)")
         uiView.reloadDecorations(forDateComponents: allComponents, animated: true)
+        Logger().info("WarfarinCalendarView: reloaded decorations for \(allComponents.count) components")
     }
     
     class Coordinator: NSObject, UICalendarViewDelegate, UICalendarSelectionSingleDateDelegate {
