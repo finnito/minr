@@ -192,42 +192,6 @@ struct SettingsView: View {
             }
         }.navigationTitle("Settings")
     }
-    
-    func updateWarfarinReminder() {
-        if (!prefs.warfarinReminderEnabled) {
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [prefs.warfarinReminderIdentifier])
-            return
-        }
-        
-        // Remove old timer
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [prefs.warfarinReminderIdentifier])
-        
-        // Last dose
-        let lastDose = DataManager.shared.mostRecentAnticoagulantDose()
-        var lastDoseString: String
-        if lastDose.count == 1 {
-            lastDoseString = "Your last dose was \(lastDose[0].dose)mg."
-        } else {
-            lastDoseString = ""
-        }
-        
-        // Create new timer
-        let content = UNMutableNotificationContent()
-        content.title = "mINR"
-        content.body = "Take \(prefs.primaryAntiCoagulantName). \(lastDoseString)"
-        content.sound = UNNotificationSound.default
-        let components = Calendar.current.dateComponents([.hour, .minute], from: prefs.warfarinReminderTime)
-        let trigger = UNCalendarNotificationTrigger(
-            dateMatching: components,
-            repeats: true
-        )
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        prefs.warfarinReminderIdentifier = request.identifier // Store identifier
-        
-        // Add timer
-        UNUserNotificationCenter.current().add(request)
-    }
 }
 
 struct SettingsView_Previews: PreviewProvider {

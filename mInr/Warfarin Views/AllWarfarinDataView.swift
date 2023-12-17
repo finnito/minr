@@ -36,10 +36,6 @@ struct AllWarfarinDataView: View {
             }.toolbar {
                 EditButton()
             }
-            .modifier(EmptyDataModifier(
-                items: dataModel.allAntiCoagulantDoses(),
-                placeholder: Text("No \(prefs.primaryAntiCoagulantName) Entries").font(.title))
-            )
         }.navigationTitle("All \(prefs.primaryAntiCoagulantName) Data")
     }
 }

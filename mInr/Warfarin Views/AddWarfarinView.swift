@@ -73,7 +73,6 @@ struct AddWarfarinView: View {
                 })
                 .buttonStyle(.borderedProminent)
             }
-            .padding(5)
             Spacer()
         }
     }

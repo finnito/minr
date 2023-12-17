@@ -71,44 +71,27 @@ extension Text {
 }
 
 extension View {
-    
-    func card() -> some View {
-        var fillColour: Color
-        if UITraitCollection.current.userInterfaceStyle == .light {
-            fillColour = .white
-        } else {
-            fillColour = .white.opacity(0.1)
-        }
-        
+    func card(fillColour: Color) -> some View {
         return self
             .background(
                 RoundedRectangle(cornerRadius: 10)
                     .fill(fillColour)
-                    .shadow(
-                        color: Color.gray.opacity(0.25),
-                        radius: 10,
-                        x: 0,
-                        y: 0
-                    )
+//                    .shadow(
+//                        color: Color.gray.opacity(0.25),
+//                        radius: 10,
+//                        x: 0,
+//                        y: 0
+//                    )
             )
             .padding(.bottom, 5)
             .padding(.horizontal, 15)
             .padding(.top, 0)
     }
     
-    func largeGradientButton(
-        colour1: Color,
-        colour2: Color
-    ) -> some View {
+    func largeDynamicGradientButton(colour: Color) -> some View {
         return self
             .buttonStyle(.borderless)
-            .background(
-                LinearGradient(gradient:
-                   Gradient(colors: [colour1, colour2]),
-                   startPoint: .topLeading,
-                   endPoint: .bottomTrailing
-                )
-            )
+            .background(colour.gradient)
             .cornerRadius(10)
             .frame(maxWidth: .infinity)
     }

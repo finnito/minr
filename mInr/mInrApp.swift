@@ -11,17 +11,9 @@ import os
 
 @main
 struct mInrApp: App {
-    @Environment(\.scenePhase) var scenePhase
-    @Environment(\.colorScheme) var colorScheme
-    @StateObject private var dataModel = DataManager()
     @StateObject private var purchaseManager = PurchaseManager()
     @StateObject var prefs: Prefs = Prefs()
     
-    let persistenceController = PersistenceController.shared
-    
-    init(appModel: DataManager) {
-        _dataModel = StateObject(wrappedValue: appModel)
-    }
     private var notificationDelegate = NotificationsViewController()
     
     init() {
@@ -44,16 +36,6 @@ struct mInrApp: App {
                 center.delegate = notificationDelegate
             }
         })
-    }
-    
-    func getCurrentSystemColorScheme() -> ColorScheme {
-        let userInterfaceStyle = UITraitCollection.current.userInterfaceStyle
-        if userInterfaceStyle == .light {
-            return .light
-        } else if userInterfaceStyle == .dark {
-            return .dark
-        }
-        return .light
     }
 
     var body: some Scene {

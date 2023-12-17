@@ -22,14 +22,12 @@ struct AllINRDataView: View {
                         }
                     }
                 }.onDelete(perform: dataModel.deleteINRItems).navigationTitle("All INR Data")
-            }.toolbar {
+            }
+            .toolbar {
                 EditButton()
             }
-            .modifier(EmptyDataModifier(
-                items: dataModel.inrMeasurements,
-                placeholder: Text("No INR Entries").font(.title))
-            )
-        }.navigationTitle("All INR Data")
+        }
+        .navigationTitle("All INR Data")
     }
 }
 

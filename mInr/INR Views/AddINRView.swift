@@ -20,7 +20,7 @@ struct AddINRView: View {
         VStack {
             HStack {
                 Text("Add INR Measurement").sheetHeaderStyle()
-                .font(.footnote)
+                    .font(.footnote)
             }.padding(.horizontal, 5)
             VStack {
                 DatePicker(
