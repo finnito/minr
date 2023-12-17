@@ -22,8 +22,8 @@ struct WidgetChart: Widget {
         ) { entry in
             ChartWidgetView(entry: entry)
         }
-        .configurationDisplayName("Chart Configuration")
-        .description("The maximum number of days to display.")
+        .configurationDisplayName("Chart")
+        .description("Display your anticoagulantion doses and INR on a chart.")
         .supportedFamilies([.systemMedium])
     }
 }

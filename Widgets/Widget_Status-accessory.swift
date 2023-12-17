@@ -21,6 +21,8 @@ struct WidgetStatusAccessory: Widget {
         ) { entry in
             StatusAccessoryWidgetView(entry: entry)
         }
+        .configurationDisplayName("Status")
+        .description("Display your anticoagulant and INR status at a glance.")
         .supportedFamilies([.accessoryRectangular])
     }
 }
