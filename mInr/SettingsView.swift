@@ -102,6 +102,10 @@ struct SettingsView: View {
                     }
                     
                     Section(header: Text("Data Export")) {
+                    
+                    Section(header: Label("App Icon", systemImage: K.SFSymbols.icon)) {
+                        ChangeAppIconView()
+                    }
                         NavigationLink(destination: DataExportView()) {
                             Text("Export Data")
                         }

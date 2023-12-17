@@ -17,6 +17,7 @@ struct K {
         static let save = "checkmark.diamond.fill"
         static let inr = "testtube.2"
         static let anticoagulant = "pills.fill"
+        static let icon = "laptopcomputer.and.iphone"
         static let note = "note.text"
     }
     
