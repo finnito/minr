@@ -25,14 +25,16 @@ struct ContentView: View {
                     HStack {
                         
                         // Section
-                        // Add Anticoagulant Button
+                        // Add INR Button
                         VStack {
                             Button {
-                                showAddAnticoagulantSheet = true
+                                showAddINRSheet = true
                             } label: {
                                 Text("\(Image(systemName: K.SFSymbols.inr)) Add INR").largeGradientButtonText()
                             }
                             .largeDynamicGradientButton(colour: prefs.chartINRColor)
+                            .sheet(isPresented: $showAddINRSheet) {
+                                AddINRView()
                                     .padding(15)
                                     .presentationDetents([.fraction(K.addDataSheetFraction)])
                                     .presentationDragIndicator(.visible)
@@ -46,18 +48,17 @@ struct ContentView: View {
                             .tint(prefs.chartINRColor)
                         }
                         
-                        
                         // Section
-                        // Add INR Button
+                        // Add Anticoagulant Button
                         VStack {
                             Button {
-                                showAddINRSheet = true
+                                showAddAnticoagulantSheet = true
                             } label: {
                                 Text("\(Image(systemName: K.SFSymbols.anticoagulant)) Add Dose").largeGradientButtonText()
                             }
-                            .sheet(isPresented: $showAddINRSheet) {
-                                AddINRView()
                             .largeDynamicGradientButton(colour: prefs.chartAnticoagulantColor)
+                            .sheet(isPresented: $showAddAnticoagulantSheet) {
+                                AddWarfarinView()
                                     .padding(15)
                                     .presentationDetents([.fraction(K.addDataSheetFraction)])
                                     .presentationDragIndicator(.visible)
