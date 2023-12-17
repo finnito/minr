@@ -35,7 +35,7 @@ struct CalendarView: UIViewRepresentable {
             let components = Calendar.current.dateComponents([.day, .month, .year], from: changedDate)
             allComponents.append(components)
         }
-        uiView.reloadDecorations(forDateComponents: allComponents, animated: true)
+        uiView.reloadDecorations(forDateComponents: [uiView.visibleDateComponents], animated: true)
         Logger().info("WarfarinCalendarView: reloaded decorations for \(allComponents.count) components")
     }
     
@@ -51,25 +51,25 @@ struct CalendarView: UIViewRepresentable {
             }
             
             // MARK: Anticoagulant Dose Decorations
-            let antiCoagulantDose = self.parent.dataModel.allAntiCoagulantDoses().first(where: { $0.timestamp?.startOfDay == dateComponents.date?.startOfDay })
-            
             let font = UIFont.systemFont(ofSize: 12)
             let configuration = UIImage.SymbolConfiguration(font: font)
-                        
-            if antiCoagulantDose == nil {
-                let image = UIImage(systemName: "exclamationmark.triangle", withConfiguration: configuration)?
-                    .withRenderingMode(.alwaysOriginal)
-                    .withTintColor(.red)
-                
-                return .image(image)
+            if let date = dateComponents.date {
+                let antiCoagulantDose = self.parent.dataModel.getAnticoagulantDoseBy(start: date.startOfDay, end: date.endOfDay)
+                if antiCoagulantDose.count == 1 {
+                    return .customView {
+                        let label = UILabel()
+                        label.text = "\(antiCoagulantDose[0].dose)mg"
+                        label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+                        return label
+                    }
+                }
             }
             
-            return .customView {
-                let label = UILabel()
-                label.text = "\(antiCoagulantDose!.dose)mg"
-                label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-                return label
-            }
+            let image = UIImage(systemName: "exclamationmark.triangle", withConfiguration: configuration)?
+                .withRenderingMode(.alwaysOriginal)
+                .withTintColor(.red)
+            
+            return .image(image)
         }
         
         func dateSelection(_ selection: UICalendarSelectionSingleDate,
