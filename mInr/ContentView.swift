@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import TipKit
 
 struct ContentView: View {
     @ObservedObject var dataModel = DataManager.shared
@@ -14,6 +15,9 @@ struct ContentView: View {
     @State private var showWebView = false
     @State private var showAddAnticoagulantSheet = false
     @State private var showAddINRSheet = false
+    
+    var tipSettings = TIPSettings()
+    var tipHelp = TIPHelp()
     
     var body: some View {
         NavigationStack {
@@ -100,19 +104,56 @@ struct ContentView: View {
                     
                     // Section
                     // Toolbar
-                    // Applies to last element
                     .navigationTitle("Home")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
-                        Button {
-                            showWebView.toggle()
-                        } label: {
-                            Label("", systemImage: "questionmark.circle")
-                        }.sheet(isPresented: $showWebView) {
-                            SFSafariViewWrapper(url: URL(string: K.helpURL)!)
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button {
+                                showWebView.toggle()
+                            } label: {
+                                HStack {
+                                    Image(systemName: K.SFSymbols.help)
+                                    Text("Help")
+                                }
+                            }.sheet(isPresented: $showWebView) {
+                                SFSafariViewWrapper(url: URL(string: K.helpURL)!)
+                            }.popoverTip(tipHelp)
                         }
-                        NavigationLink(destination: SettingsView()) {
-                            Label("", systemImage: "gear")
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            NavigationLink(destination: SettingsView()) {
+                                HStack {
+                                    Text("Settings")
+                                    Image(systemName: K.SFSymbols.settings)
+                                }
+                            }.popoverTip(tipSettings)
+                        }
+                        
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            Button {
+                                showAddINRSheet = true
+                            } label: {
+                                Text("Add INR")
+                            }
+                            
+                            .sheet(isPresented: $showAddINRSheet) {
+                                AddINRView()
+                                    .padding(15)
+                                    .presentationDetents([.fraction(K.addDataSheetFraction)])
+                                    .presentationDragIndicator(.visible)
+                            }
+                            
+                            Button {
+                                showAddAnticoagulantSheet = true
+                            } label: {
+                                Text("Add \(prefs.primaryAntiCoagulantName)")
+                            }
+                            .sheet(isPresented: $showAddAnticoagulantSheet) {
+                                AddWarfarinView()
+                                    .padding(15)
+                                    .presentationDetents([.fraction(K.addDataSheetFraction)])
+                                    .presentationDragIndicator(.visible)
+                            }
                         }
                     }
                 }
