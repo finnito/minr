@@ -82,6 +82,10 @@ class Prefs: ObservableObject {
     @AppStorage("showFirstRunView", store: UserDefaults(suiteName: "group.minr"))
     public var showFirstRunView: Bool = true
     
+    // Last Data Export
+    @AppStorage("lastDataExport", store: UserDefaults(suiteName: "group.minr"))
+    public var lastDataExport: Date?
+    
     // Primary Anticoagulant
     @AppStorage("primaryAntiCoagulantName", store: UserDefaults(suiteName: "group.minr"))
     public var primaryAntiCoagulantName: String = "Warfarin"

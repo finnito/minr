@@ -30,7 +30,7 @@ struct ActivityView: UIViewControllerRepresentable {
 
 struct DataExportView: View {
     @ObservedObject var dataModel = DataManager.shared
-    @Environment(\.prefs) private var prefs
+    @ObservedObject var prefs = Prefs.shared
     
     @State var showSheet = false
     @State var items = [URL]()
@@ -39,7 +39,16 @@ struct DataExportView: View {
         NavigationStack{
             Form {
                 Text("Your data is synced using Apple's CloudKit, but, you may export it to do any other processing or backups that you desire.")
+                    .listRowSeparator(.hidden)
                 Text("Simply click the export button below and save the files. It may take a few seconds for the files to be generated.")
+                    .listRowSeparator(.hidden)
+                
+                if let date = prefs.lastDataExport {
+                    Text("Data last exported: \(date.formatted(date: .numeric, time: .omitted)).")
+                } else {
+                    Text("Data last exported: never.")
+                }
+                
                 Button {
                     let inrDataFrame = getINRDataFrame()
                     
