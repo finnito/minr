@@ -8,6 +8,7 @@
 import SwiftUI
 import NotificationCenter
 import os
+import TipKit
 
 @main
 struct mInrApp: App {
@@ -49,6 +50,12 @@ struct mInrApp: App {
                 .task {
                     await purchaseManager.updatePurchasedProducts()
                 }
+            .task {
+                try? Tips.configure([
+                    .displayFrequency(.daily),
+                    .datastoreLocation(.groupContainer(identifier: "group.minr"))
+                ])
+            }
         }
     }
 }
