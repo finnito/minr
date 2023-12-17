@@ -80,21 +80,22 @@ struct ContentView: View {
                     // Warfarin Chart
                     Text("Last \(prefs.graphRange) Days").customHeaderStyle()
                     WarfarinINRChart()
-                        .card()
-                    
+                        .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                     // Section
                     // Medication Compliance Chart
                     Text("Medication Compliance").customHeaderStyle()
                     CalendarView(
                         interval: DateInterval(start: .distantPast, end: Date())
                     )
-                    .card()
+                    .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                     
                     
                     // Section
                     // In-App Purchases
                     Text("Support The App").customHeaderStyle()
                     StoreView().card()
+                    StoreView()
+                        .card(fillColour: colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight)
                         .fullScreenCover(isPresented: $prefs.showFirstRunView) {
                             FirstRunView()
                         }
@@ -118,7 +119,7 @@ struct ContentView: View {
                     }
                 }
             }
-        }
+        }.tint(colorScheme == .dark ? prefs.darkAccentColour : prefs.lightAccentColour)
     }
 }
 

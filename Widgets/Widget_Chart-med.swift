@@ -118,6 +118,7 @@ struct ChartWidgetView: View {
                 AxisValueLabel()
             }
         }
+        .containerBackground(colorScheme == .dark ? K.Colours.cardBackgroundDark : K.Colours.cardBackgroundLight, for: .widget)
     }
 }
 
