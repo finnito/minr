@@ -78,6 +78,10 @@ class Prefs: ObservableObject {
     
     static let shared: Prefs = Prefs()
     
+    // First-Run Experience
+    @AppStorage("showFirstRunView", store: UserDefaults(suiteName: "group.minr"))
+    public var showFirstRunView: Bool = true
+    
     // Primary Anticoagulant
     @AppStorage("primaryAntiCoagulantName", store: UserDefaults(suiteName: "group.minr"))
     public var primaryAntiCoagulantName: String = "Warfarin"

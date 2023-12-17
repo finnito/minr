@@ -95,6 +95,9 @@ struct ContentView: View {
                     // In-App Purchases
                     Text("Support The App").customHeaderStyle()
                     StoreView().card()
+                        .fullScreenCover(isPresented: $prefs.showFirstRunView) {
+                            FirstRunView()
+                        }
                     
                     // Section
                     // Toolbar
