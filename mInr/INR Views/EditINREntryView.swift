@@ -19,14 +19,8 @@ struct EditINREntryView: View {
                 Section {
                     HStack {
                         Label("INR", systemImage: K.SFSymbols.inr)
-                        TextField(
-                            "1.5",
-                            value: $entry.inr,
-                            format: .number
-                        ).keyboardType(.decimalPad)
-                        .focused($fieldFocused)
-                        .onAppear {
-                            fieldFocused = true
+                        Stepper(value: $entry.inr, in: 0...30, step: 0.1) {
+                            Text("\(entry.inr.formatted())")
                         }
                     }
                     HStack {

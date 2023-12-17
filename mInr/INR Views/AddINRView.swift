@@ -31,16 +31,8 @@ struct AddINRView: View {
                 HStack {
                     Label("INR", systemImage: K.SFSymbols.inr)
                     Spacer()
-                    TextField(
-                        "1.5",
-                        value: prefs.$inrMeasurement,
-                        format: .number
-                    )
-                    .keyboardType(.decimalPad)
-                    .multilineTextAlignment(.trailing)
-                    .focused($fieldFocused)
-                    .onAppear {
-                        fieldFocused = true
+                    Stepper(value: $prefs.inrMeasurement, in: 0...30, step: 0.1) {
+                        Text("\(prefs.inrMeasurement.formatted())")
                     }
                 }
                 HStack {
